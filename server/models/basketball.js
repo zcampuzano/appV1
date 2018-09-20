@@ -6,7 +6,6 @@ mongoose.Promise = global.Promise; // Configure Mongoose Promises
 const Schema = mongoose.Schema; // Import Schema from Mongoose
 
 const basketballSchema = new Schema({
-    number : { type  : Number, required : false },
     PTA2 : { type  : Number, required : false },
     PTM2: { type  : Number, required : false },
     PTA3 : { type  : Number, required : false },
