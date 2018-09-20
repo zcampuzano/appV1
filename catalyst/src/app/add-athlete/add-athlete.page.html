@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-button fill="clear" (click)="goBack()"><ion-icon name="ios-arrow-back" size="large"></ion-icon></ion-button>
+    <ion-title>Roster</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form *ngIf="formVisible" [formGroup]="form" (submit)="onAthleteCreateSubmit()">
+    <!-- First Name Input -->
+    <ion-item [ngClass]="{'has-error': form.controls['firstname'].errors && form.controls['firstname'].dirty, 'has-success': form.controls['firstname'].errors}">
+      <ion-label>First Name</ion-label>
+      <ion-input class="form-control" formControlName="firstname" type="text"></ion-input>
+      <!-- Validation -->
+      <ion-list class="help-block">
+        <ion-item *ngIf="form.controls['firstname'].errors?.required && form.controls['firstname'].dirty">This field is required.</ion-item>
+      </ion-list>
+    </ion-item>
+
+    <!-- Last Name Input -->
+    <ion-item [ngClass]="{'has-error': form.controls['lastname'].errors && form.controls['lastname'].dirty, 'has-success': form.controls['lastname'].errors}">
+      <ion-label>Last Name</ion-label>
+      <ion-input class="form-control" formControlName="lastname" type="text"></ion-input>
+      <!-- Validation -->
+      <ion-list class="help-block">
+        <ion-item *ngIf="form.controls['lastname'].errors?.required && form.controls['lastname'].dirty">This field is required.</ion-item>
+      </ion-list>
+    </ion-item>
+
+    <!-- Number Input -->
+    <ion-item [ngClass]="{'has-error': form.controls['number'].errors && form.controls['number'].dirty, 'has-success': form.controls['number'].errors}">
+      <ion-label>Number</ion-label>
+      <ion-input class="form-control" formControlName="number" type="number"></ion-input>
+      <!-- Validation -->
+      <ion-list class="help-block">
+        <ion-item *ngIf="form.controls['number'].errors?.required && form.controls['number'].dirty">This field is required.</ion-item>
+      </ion-list>
+    </ion-item>
+
+
+    <!-- Submit Input -->
+    <ion-button type="submit" size="full" class="btn btn-primary">Save</ion-button>
+
+  </form>
+  <!-- Registration Form /-->
+  <ion-list>
+    <ion-item *ngFor="let athlete of athletes">{{ athlete.lastname }} {{ athlete.number }}</ion-item>
+  </ion-list>
+  <ion-button (click)="makeVisible()">Add Athlete</ion-button>
+
+</ion-content>

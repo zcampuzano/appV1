@@ -1,0 +1,32 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="form" (submit)="onLoginSubmit()">
+    <ion-item [ngClass]="{'has-error': form.controls['username'].errors && form.controls['username'].dirty, 'has-success': form.controls['username'].valid && form.controls['username'].dirty }">
+      <ion-input class="form-control" formControlName="username" type="text" placeholder="Username"></ion-input>
+      <!-- Validation -->
+      <ion-list class="help-block">
+        <ion-item *ngIf="form.controls['username'].errors?.required && form.controls['username'].dirty">This field is required.</ion-item>
+      </ion-list>
+    </ion-item>
+    <ion-item [ngClass]="{'has-error': form.controls['password'].errors && form.controls['password'].dirty, 'has-success': form.controls['password'].valid && form.controls['password'].dirty }">
+      <ion-input class="form-control" formControlName="password" type="password" placeholder="Password"></ion-input>
+      <!-- Validation -->
+      <ion-list class="help-block">
+        <ion-item *ngIf="form.controls['password'].errors?.required && form.controls['password'].dirty">This field is required.</ion-item>
+      </ion-list>
+    </ion-item>
+
+    <ion-button size="full" type="submit" [disabled]="!form.valid">Login</ion-button>
+
+  </form>
+
+  <ion-button size="full" color="light" (click)="register()">
+    Register
+  </ion-button>
+
+</ion-content>

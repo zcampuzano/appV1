@@ -1,0 +1,7 @@
+{
+  "name": "catalyst",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
