@@ -7,8 +7,8 @@ const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'home', loadChildren: './home/home.module#HomePageModule', canActivate: [AuthGuard] },
   { path: 'login', loadChildren: './login/login.module#LoginPageModule', canActivate: [NotAuthGuard] },
-  { path: 'register', loadChildren: './register/register.module#RegisterPageModule', canActivate: [NotAuthGuard]},
-  { path: 'add-athlete', loadChildren: './add-athlete/add-athlete.module#AddAthletePageModule' },
+  { path: 'register', loadChildren: './register/register.module#RegisterPageModule', canActivate: [NotAuthGuard] },
+  { path: 'add-athlete', loadChildren: './add-athlete/add-athlete.module#AddAthletePageModule', canActivate: [AuthGuard] },
 ];
 
 @NgModule({

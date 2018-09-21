@@ -53,8 +53,6 @@ const athleteSchema = new Schema({
     lastname: { type: String, required: true, validate: usernameValidators },
     number: { type: Number, required: true},
     basketballStat : { type : mongoose.Schema.Types.ObjectId, ref: 'Basketball' , sparse : true},
-    // baseballStat : { type : mongoose.Schema.Types.ObjectId, ref: 'Baseball' , sparse : true},
-    // footballStat : { type : mongoose.Schema.Types.ObjectId, ref: 'Football', sparse : true},
     organization : { type: mongoose.Schema.Types.ObjectId, ref: 'Organization'}
 });
 

@@ -7,7 +7,8 @@ const Schema = mongoose.Schema; // Import Schema from Mongoose
 
 const organizationSchema = new Schema({
     organizationname: { type: String, required: true, unique: true, lowercase : true},
-    location: { type: String, required: true, unique: true, lowercase : true}
+    location: { type: String, required: true, unique: true, lowercase : true},
+    seasons: { type: mongoose.Schema.Types.ObjectId, ref: 'Season' }
 });
 
 module.exports = mongoose.model('Organization', organizationSchema);
