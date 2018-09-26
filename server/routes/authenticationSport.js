@@ -1,7 +1,9 @@
 const User = require('../models/user'); // Import User Model Schema
 const Organization = require('../models/organization'); // Import User Model Schema
 const Athlete = require('../models/athlete'); // Import User Model Schema
-// const Recruit = require('../serverSide/models/recruit'); // Import User Model Schema
+const Season = require('../models/season');
+const Game = require('../models/game');
+const GameStat = require('../models/gameStat');
 const BasketballSchema = require('../models/basketball');
 const jwt = require('jsonwebtoken');
 const config = require('../config/database');
@@ -42,6 +44,7 @@ module.exports = (router, session) => {
             TOPG : 0, MIN : 0, PTS : 0, TRB : 0, FF : 0, TECHF : 0, DQ : 0, GS : 0, TF : 0, W : 0, L : 0, T : 0
         });
 
+        //todo what dis
         User.findOne({ _id: req.decoded.userId }).select('organization').exec((err, organID) => {
             if (err) {
                 res.json({ success: false, message: err }); // Return error
@@ -49,26 +52,170 @@ module.exports = (router, session) => {
                 if (!organID) {
                     res.json({ success: false, message: 'We do not have any organizations' }); // Return error, organs was not found in db
                 } else {
-                    BasketballSchema.createBasketballSchema(basketballSchema, function(err){
+                    Organization.findOne({ _id: organID.organization }).select('seasons').exec((err, seasons) => {
                         if (err) {
-                            if (err.errors) {
-                                // Check if validation error is in the email field
-                                if (err.errors.PTA2) {
-                                    res.json({ success: false, message: err.errors.PTA2.message }); // Return error
-                                }
-                            } else {
-                                res.json({ success: false, message: 'Could not save BasketballSchema. Error: ', err }); // Return error if not related to validation
-                            }
+                            res.json({ success: false, message: err });
                         } else {
-                            res.json({ success: true, message: 'BasketballSchema registered!', organID : organID.organization,
-                                basketballSchemaID: basketballSchema._id }); // Return success
+                            console.log(seasons);
+                            if (!seasons) {
+                                res.json({ success: false, message: 'No seasons' });
+                            } else {
+                                BasketballSchema.createBasketballSchema(basketballSchema, function(err){
+                                    if (err) {
+                                        if (err.errors) {
+                                            // Check if validation error is in the email field
+                                            if (err.errors.PTA2) {
+                                                res.json({ success: false, message: err.errors.PTA2.message }); // Return error
+                                            }
+                                        } else {
+                                            res.json({ success: false, message: 'Could not save BasketballSchema. Error: ', err }); // Return error if not related to validation
+                                        }
+                                    } else {
+                                        res.json({ success: true, message: 'BasketballSchema registered!', organID : organID.organization,
+                                            basketballSchemaID: basketballSchema._id, seasons : seasons }); // Return success
+                                    }
+                                });
+                            }
                         }
-                    });
+                    })
+
                 }
             }
         })
     });
 
+
+
+    /* ==============
+        Create Season Route
+     ============== */
+    router.post('/createSeason', (req, res) => {
+        if (!req.body.year) {
+            res.json({ success: false, message: 'Please provide a year'});
+        }
+        let season = new Season({
+            year: req.body.year,
+            basketballStat: req.body.basketballStat,
+            athletes: req.body.athletes,
+            games: req.body.games
+        });
+        Season.createSeason(season, function(err){
+            if (err) {
+                if (err.errors) {
+                    // Check if validation error is in the email field
+                    if (err.errors.year) {
+                        res.json({ success: false, message: err.errors.year.message }); // Return error
+                    } else {
+                        // Check if validation error is in the username field
+                        if (err.errors.basketballStat) {
+                            res.json({ success: false, message: err.errors.basketballStat.message}); // Return error
+                        } else {
+                            if (err.errors.athletes) {
+                                res.json({ success : false, message : err.errors.athletes.message});
+                            } else {
+                                if (err.errors.games) {
+                                    res.json({success: false, message: err.errors.games.message});
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    res.json({ success: false, message: 'Could not save season. Error: ', err }); // Return error if not related to validation
+                }
+            } else {
+                res.json({ success: true, message: 'Season registered!', seasonYear: season.year, seasonID: season._id }); // Return success
+            }
+        });
+    });
+
+    /* ==============
+        Create Game Route
+     ============== */
+    router.post('/createGame', (req, res) => {
+        if(!req.body.date) {
+            res.json({ success: false, message: 'Please provide a date'});
+        } else {
+            if(!req.body.athletes) {
+                res.json({ success: false, message: 'No players selected'});
+            } else {
+                if (!req.body.home) {
+                    res.json({success: false, message: 'No home team indicated'});
+                }
+                if (!req.body.away) {
+                    res.json({ success: false, message: 'No away team indicated'});
+                }
+            }
+        }
+
+        let game = new Game({
+            date: req.body.date,
+            athletes: req.body.athletes,
+            home: req.body.home,
+            away: req.body.away
+        });
+
+        Game.createGame(game, function(err){
+            if (err) {
+                if (err.errors) {
+                    // Check if validation error is in the email field
+                    if (err.errors.date) {
+                        res.json({ success: false, message: err.errors.date.message }); // Return error
+                    } else {
+                        // Check if validation error is in the username field
+                        if (err.errors.athletes) {
+                            res.json({ success: false, message: err.errors.athletes.message}); // Return error
+                        } else {
+                            if (err.errors.home) {
+                                res.json({ success : false, message : err.errors.home.message});
+                            } else {
+                                if (err.errors.away) {
+                                    res.json({success: false, message: err.errors.away.message});
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    res.json({ success: false, message: 'Could not save game. Error: ', err }); // Return error if not related to validation
+                }
+            } else {
+                res.json({ success: true, message: 'Game registered!', gameDate: game.date }); // Return success
+            }
+        });
+
+    });
+
+    /* ==============
+        Create GameStat Route
+     ============== */
+    router.post('/createGameStat', (req, res) => {
+        if (!req.body.athlete) {
+            res.json({success: false, message: 'No athlete'})
+        }
+        let gameStat = new GameStat({
+            athlete : req.body.athlete,
+            PTA2 : 0, PTM2 : 0, PTA3 : 0, AST : 0, BLK : 0, DRB : 0,
+            FTA : 0, FTM : 0, ORB : 0, PF : 0, STL : 0, TO : 0
+        });
+
+        //todo change from zeros
+
+        GameStat.createGameStat(gameStat, function(err){
+            if (err) {
+                if (err.errors) {
+                    // Check if validation error is in the email field
+                    if (err.errors.athlete) {
+                        res.json({ success: false, message: err.errors.athlete.message }); // Return error
+                    }
+                } else {
+                    res.json({ success: false, message: 'Could not save GameStat. Error: ', err }); // Return error if not related to validation
+                }
+            } else {
+                res.json({ success: true, message: 'GameStat registered!',
+                    gameStatID: gameStat._id }); // Return success
+            }
+        });
+
+    });
 
     /* ==============
         Create Athlete Route
@@ -79,18 +226,19 @@ module.exports = (router, session) => {
         } else {
             if (!req.body.lastname) {
                 res.json({success: false, message: 'Please provide a last name'});
-            }  else {
+            } else {
                 if (!req.body.organization) {
                     res.json({success: false, message: 'You must provide a organization'});
                 }
             }
         }
         let athlete = new Athlete({
-            firstname : req.body.firstname,
-            lastname : req.body.lastname,
+            firstname: req.body.firstname,
+            lastname: req.body.lastname,
             number: req.body.number,
-            basketballStat : req.body.basketballStat,
-            organization : req.body.organization
+            position: req.body.position,
+            basketballStat: req.body.basketballStat,
+            organization: req.body.organization
         });
         Athlete.createAthlete(athlete, function(err){
             if (err) {
@@ -118,7 +266,7 @@ module.exports = (router, session) => {
                     res.json({ success: false, message: 'Could not save athlete. Error: ', err }); // Return error if not related to validation
                 }
             } else {
-                res.json({ success: true, message: 'Athlete registered!', athleteFirstName: athlete.firstname }); // Return success
+                res.json({ success: true, message: 'Athlete registered!', athleteFirstName: athlete.firstname, athleteID: athlete._id }); // Return success
             }
         });
     });
@@ -128,7 +276,7 @@ module.exports = (router, session) => {
        Route to get all athletes
     =============================================================== */
     router.get('/getAthletes', (req, res) => {
-        Athlete.find({}).select('firstname lastname number _id').exec((err, allAthlete) => {
+        Athlete.find({}).select('firstname lastname number position _id').exec((err, allAthlete) => {
             if (err) {
                 res.json({ success: false, message: err }); // Return error
             } else {
@@ -194,6 +342,59 @@ module.exports = (router, session) => {
                 }
             }
         })
+    });
+
+    /* ==============
+        Update Season Roster
+     ============== */
+
+    router.post('/updateSeasonRoster', (req, res) => {
+        if (!req.body.seasonID) {
+            console.log("no ID");
+        }
+        Season.findOneAndUpdate(
+            {"_id": req.body.seasonID},
+            {
+                "$push": {
+                    athletes: req.body.athleteID
+                }
+            },
+            {"new": true, "upsert": true},
+            function (err, doc) {
+                if (err) {
+                    res.json({ success: false, message: 'Could not add athlete to season roster' }); // Return error
+                    throw err;
+                }
+                console.log(doc);
+                res.json({ success: true, firstname: doc.athletes });
+            }
+        );
+    });
+
+    /* =================================
+        Update organization with Season
+     ================================= */
+    router.post('/updateOrganSeason', (req, res) => {
+       if (!req.body.organID) {
+           console.log("no ID");
+       }
+       Organization.findOneAndUpdate(
+           {"_id": req.body.organID},
+           {
+               "$push": {
+                   seasons: req.body.seasonID
+               }
+           },
+           {"new": true, "upsert": true},
+           function (err, doc) {
+               if (err) {
+                   res.json({ success: false, message: 'Could not add season to organization' }); // Return error
+                   throw err;
+               }
+               console.log(doc);
+               res.json({ success: true, firstname: doc.seasons });
+           }
+       );
     });
 
 

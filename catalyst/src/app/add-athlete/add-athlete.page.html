@@ -39,6 +39,16 @@
       </ion-list>
     </ion-item>
 
+    <!-- Number Input -->
+    <ion-item [ngClass]="{'has-error': form.controls['position'].errors && form.controls['position'].dirty, 'has-success': form.controls['position'].errors}">
+      <ion-label>Position</ion-label>
+      <ion-select class="form-control" formControlName="position">
+        <ion-select-option *ngFor="let position of positions" value="{{ position }}">
+          {{ position }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
 
     <!-- Submit Input -->
     <ion-button type="submit" size="full" class="btn btn-primary">Save</ion-button>

@@ -202,8 +202,8 @@ export class RegisterPage implements OnInit {
             // };
             const organization = {
                 organizationname : organName,
-                location : organLoc
-                // sport : sportSchema
+                location : organLoc,
+                seasons : [],
             };
             // console.log(sportSchema.baseball);
             // console.log(sportSchema.football);
@@ -273,7 +273,6 @@ export class RegisterPage implements OnInit {
                 password: this.form.get('password').value, // Password input field
                 role: this.isAdmin, // user/admin?
                 organization : this.form.get('organization').value, // new organization
-                // sport : sportSchema
             };
 
             // console.log(user);

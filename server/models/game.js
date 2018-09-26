@@ -7,8 +7,15 @@ const Schema = mongoose.Schema; // Import Schema from Mongoose
 
 const gameSchema = new Schema({
     date: {type: String, require: true},
-    athletes: { type: mongoose.Schema.Types.ObjectId, ref: 'Athlete' }, // roster
-    // home/away teams?
+    athletes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Athlete' }], // roster
+    home: {
+      ID: { type: mongoose.Schema.Types.ObjectId, ref: 'Organization' },
+      stat: { type: mongoose.Schema.Types.ObjectId, ref: 'Basketball' }
+    },
+    away: {
+        ID: { type: mongoose.Schema.Types.ObjectId, ref: 'Organization' },
+        stat: { type: mongoose.Schema.Types.ObjectId, ref: 'Basketball' }
+    },
 
 });
 

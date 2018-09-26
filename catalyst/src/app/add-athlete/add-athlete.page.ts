@@ -15,6 +15,8 @@ export class AddAthletePage implements OnInit {
   athletes;
   formVisible = false;
   private processing: boolean;
+  positions = ['PG', 'SG', 'PF', 'SF', 'C'];
+
 
   constructor(
       private formBuilder: FormBuilder,
@@ -44,7 +46,8 @@ export class AddAthletePage implements OnInit {
               //Validators.required, // Field is required
               //this.validateUsername // Custom validation
               //todo add custom number validation
-          ])]
+          ])],
+          position: ['']
       }, { validator: null});
   }
 
@@ -77,7 +80,6 @@ export class AddAthletePage implements OnInit {
               console.log(this.athletes);
           }
       });
-      console.log(this.athletes);
       //todo only allow user to see athletes in their organization
   }
 
@@ -98,15 +100,32 @@ export class AddAthletePage implements OnInit {
                   firstname: this.form.get('firstname').value,
                   lastname: this.form.get('lastname').value,
                   number: this.form.get('number').value,
+                  position: this.form.get('position').value,
                   basketballStat :  data['basketballSchemaID'],
                   organization : data['organID']
               };
-              // console.log(data);
+
+              const lastSeason = data['seasons'].seasons.length - 1;
+              const seasonID = data['seasons'].seasons[lastSeason];
+
               this.sportService.createAthlete(athlete).subscribe( data => {
                 // console.log(athlete);
                   if (data['success']) {
                       this.messageClass = 'alert alert-success'; // Set a success class
-                      this.message = data['message']; // Set a success messagers
+                      this.message = data['message']; // Set a success message
+                      const season = {
+                          seasonID : seasonID,
+                          athleteID : data['athleteID']
+                      }
+
+                      this.sportService.updateSeasonRoster(season).subscribe(data => {
+                          if (data['success']) {
+                              this.message = data['message'];
+                          } else {
+                              this.message = data['message'];
+                          }
+                      })
+
                   } else {
                       this.messageClass = 'alert alert-danger'; // Set an error class
                       this.message = data['message']; // Set an error message
@@ -135,6 +154,7 @@ export class AddAthletePage implements OnInit {
       this.form.controls['firstname'].disable();
       this.form.controls['lastname'].disable();
       this.form.controls['number'].disable();
+      this.form.controls['position'].disable();
   }
 
   // Function to enable the registration form
@@ -142,6 +162,7 @@ export class AddAthletePage implements OnInit {
       this.form.controls['firstname'].enable();
       this.form.controls['lastname'].enable();
       this.form.controls['number'].enable();
+      this.form.controls['position'].enable();
   }
 
   goBack() {

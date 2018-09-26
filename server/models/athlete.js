@@ -5,7 +5,6 @@ const mongoose = require('mongoose'); // Node Tool for MongoDB
 mongoose.Promise = global.Promise; // Configure Mongoose Promises
 const Schema = mongoose.Schema; // Import Schema from Mongoose
 
-//todo add position
 
 // Validate Function to check username length
 let usernameLengthChecker = (username) => {
@@ -34,6 +33,7 @@ let validUsername = (username) => {
     }
 };
 
+
 // Array of Username validators
 const usernameValidators = [
     // First Username validator
@@ -51,9 +51,10 @@ const usernameValidators = [
 const athleteSchema = new Schema({
     firstname: { type: String, required: true, validate: usernameValidators },
     lastname: { type: String, required: true, validate: usernameValidators },
-    number: { type: Number, required: true},
-    basketballStat : { type : mongoose.Schema.Types.ObjectId, ref: 'Basketball' , sparse : true},
-    organization : { type: mongoose.Schema.Types.ObjectId, ref: 'Organization'}
+    number: { type: Number, required: true },
+    position: { type: String, required: false },
+    basketballStat : { type : mongoose.Schema.Types.ObjectId, ref: 'Basketball' , sparse : true },
+    organization : { type: mongoose.Schema.Types.ObjectId, ref: 'Organization' }
 });
 
 module.exports = mongoose.model('Athlete', athleteSchema);

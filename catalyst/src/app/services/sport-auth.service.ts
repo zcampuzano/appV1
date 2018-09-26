@@ -6,8 +6,8 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
   providedIn: 'root'
 })
 export class SportAuthService {
-  domain = 'http://192.168.1.70:8080'; // Development Domain - Mobile
-  // domain = 'http://localhost:8080'; // Development Domain - Web
+  // domain = 'http://192.168.1.70:8080'; // Development Domain - Mobile
+  domain = 'http://localhost:8080'; // Development Domain - Web
   loginAuthToken;
   httpOptions;
 
@@ -30,18 +30,25 @@ export class SportAuthService {
       // console.log('token boiys : ', this.loginAuthToken)
   }
 
-  // Function to register user accounts
-  createBaseballSchema(baseballSchema) {
-      this.createAuthenticationHeaders(); // Create headers before sending to API
-      return this.http.post(this.domain + '/sportAuthentication/createBaseballSchema', baseballSchema, this.httpOptions);
-  }
-  // Function to register user accounts
-  createFootballSchema(footballSchema) {
-      this.createAuthenticationHeaders(); // Create headers before sending to API
-      return this.http.post(this.domain + '/sportAuthentication/createFootballSchema', footballSchema, this.httpOptions);
+  // Function to create Season
+  createSeason(season) {
+      this.createAuthenticationHeaders();
+      return this.http.post(this.domain + '/sportAuthentication/createSeason', season, this.httpOptions);
   }
 
-  // Function to register user accounts
+  // Function to create game instance
+  createGame(game) {
+      this.createAuthenticationHeaders();
+      return this.http.post(this.domain + '/sportAuthentication/createGame', game, this.httpOptions);
+  }
+
+  // Function to create game stat
+  createGameStat(gameStat) {
+      this.createAuthenticationHeaders();
+      return this.http.post(this.domain + '/sportAuthentication/createGameStat', gameStat, this.httpOptions);
+  }
+
+  // Function to create basketball average stat schema
   createBasketballSchema(basketballSchema) {
       this.createAuthenticationHeaders(); // Create headers before sending to API
       return this.http.post(this.domain + '/sportAuthentication/createBasketballSchema', basketballSchema, this.httpOptions);
@@ -52,24 +59,20 @@ export class SportAuthService {
       return this.http.post(this.domain + '/sportAuthentication/createAthlete', athlete, this.httpOptions);
   }
 
-  createRecruit(recruit) {
-      this.createAuthenticationHeaders(); // Create headers before sending to API
-      return this.http.post(this.domain + '/sportAuthentication/createRecruit', recruit, this.httpOptions);
-  }
 
   getAthletes() {
       this.createAuthenticationHeaders(); // Create headers before sending to API
       return this.http.get(this.domain + '/sportAuthentication/getAthletes', this.httpOptions);
   }
 
-  getRecruits() {
-      this.createAuthenticationHeaders(); // Create headers before sending to API
-      return this.http.get(this.domain + '/sportAuthentication/getRecruits', this.httpOptions);
+  updateOrgSeason(organization) {
+      this.createAuthenticationHeaders();
+      return this.http.post(this.domain + '/sportAuthentication/updateOrganSeason', organization, this.httpOptions);
   }
 
-  getSports() {
-      this.createAuthenticationHeaders(); // Create headers before sending to API
-      return this.http.get(this.domain + '/sportAuthentication/getSports', this.httpOptions);
+  updateSeasonRoster(season) {
+      this.createAuthenticationHeaders();
+      return this.http.post(this.domain + '/sportAuthentication/updateSeasonRoster', season, this.httpOptions);
   }
 
   getUser(id) {
