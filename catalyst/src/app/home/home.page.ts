@@ -73,6 +73,10 @@ export class HomePage {
 
   }
 
+  createGame() {
+
+  }
+
   athlete() {
     this.router.navigate(['/add-athlete']);
   }

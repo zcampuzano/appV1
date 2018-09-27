@@ -51,6 +51,10 @@ export class AddAthletePage implements OnInit {
       }, { validator: null});
   }
 
+  athleteActive() {
+      return true;
+  }
+
   // Function to validate username is proper format
   validateUsername(controls) {
       // Create a regular expression
@@ -80,7 +84,6 @@ export class AddAthletePage implements OnInit {
               console.log(this.athletes);
           }
       });
-      //todo only allow user to see athletes in their organization
   }
 
   onAthleteCreateSubmit() {

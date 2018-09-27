@@ -54,7 +54,7 @@ const athleteSchema = new Schema({
     number: { type: Number, required: true },
     position: { type: String, required: false },
     basketballStat : { type : mongoose.Schema.Types.ObjectId, ref: 'Basketball' , sparse : true },
-    organization : { type: mongoose.Schema.Types.ObjectId, ref: 'Organization' }
+    organization: { type: mongoose.Schema.Types.ObjectId, ref: 'Organization' }
 });
 
 module.exports = mongoose.model('Athlete', athleteSchema);
