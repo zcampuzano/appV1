@@ -3,7 +3,9 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {RegisterAuthService} from "../services/register-auth.service";
 import {SportAuthService} from "../services/sport-auth.service";
 import {Router} from "@angular/router";
-import {FormBuilder, FormGroup, FormControl, Validators} from "@angular/forms";
+// import {FormBuilder, FormGroup, FormControl, Validators} from "@angular/forms";
+import { ModalController } from "@ionic/angular";
+import { GamePage } from "../game/game.page";
 
 @Component({
   selector: 'app-home',
@@ -12,22 +14,29 @@ import {FormBuilder, FormGroup, FormControl, Validators} from "@angular/forms";
 })
 export class HomePage {
   orgData = null;
-  form: FormGroup;
   message;
+  date;
+
 
   constructor(public http: HttpClient,
               private authService: RegisterAuthService,
               private router: Router,
-              private formBuilder: FormBuilder,
-              private sportService: SportAuthService) {}
+              private sportService: SportAuthService,
+              private modalCtrl: ModalController) {}
 
-  createForm() {
-
-  }
 
   logout() {
     this.authService.logout();
     this.router.navigate(['']);
+  }
+
+
+  async presentModal() {
+    const modal = await this.modalCtrl.create({
+        component: GamePage,
+        // componentProps: { value: 123 }
+    });
+    return await modal.present();
   }
 
   createSeason() {
@@ -74,7 +83,7 @@ export class HomePage {
   }
 
   createGame() {
-
+      this.presentModal();
   }
 
   athlete() {

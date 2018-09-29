@@ -6,8 +6,8 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
   providedIn: 'root'
 })
 export class SportAuthService {
-  // domain = 'http://192.168.1.70:8080'; // Development Domain - Mobile
-  domain = 'http://localhost:8080'; // Development Domain - Web
+  domain = 'http://192.168.1.70:8080'; // Development Domain - Mobile
+  // domain = 'http://localhost:8080'; // Development Domain - Web
   loginAuthToken;
   httpOptions;
 

@@ -13,11 +13,12 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import {GamePage} from "./game/game.page";
 
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent, GamePage],
+  entryComponents: [GamePage],
   imports: [
       BrowserModule,
       IonicModule.forRoot(),
