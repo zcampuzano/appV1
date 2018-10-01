@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>New Game</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form [formGroup]="form" (submit)="onGameSubmit()">
+    <!-- First Name Input -->
+    <ion-item [ngClass]="{'has-error': form.controls['date'].errors && form.controls['date'].dirty, 'has-success': form.controls['date'].errors}">
+      <ion-label>Date</ion-label>
+      <ion-input class="form-control" formControlName="date" type="date"></ion-input>
+    </ion-item>
+
+    <ion-item no-lines>
+      <ion-label>Active Players</ion-label>
+    </ion-item>
+
+
+    <ion-list>
+      <ion-grid>
+        <ion-row class="row" style="font-weight: bold;">
+          <ion-col size="2">Pos</ion-col>
+          <ion-col size="5">Name</ion-col>
+          <ion-col size="3">#</ion-col>
+          <ion-col>Active</ion-col>
+        </ion-row>
+        <ion-row *ngFor="let athlete of athletes" class="row">
+          <ion-col size="2">
+            {{ athlete.position }}
+          </ion-col>
+          <ion-col size="5">
+            {{ athlete.lastname }}
+          </ion-col>
+          <ion-col size="3">
+            {{ athlete.number }}
+          </ion-col>
+          <ion-col>
+            <ion-toggle (ionChange)="addActive(athlete._id)" disabled="disabled"></ion-toggle>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-list>
+
+
+    <ion-item [ngClass]="{'has-error': form.controls['away'].errors && form.controls['away'].dirty, 'has-success': form.controls['away'].errors}">
+      <ion-label>Away Team</ion-label>
+      <ion-select class="form-control" formControlName="away">
+        <ion-select-option *ngFor="let organization of organizations" value="{{ organization._id }}">
+          {{ organization.organizationname }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <!-- Submit Input -->
+    <ion-button type="submit" size="full" class="btn btn-primary">Save</ion-button>
+
+  </form>
+</ion-content>
