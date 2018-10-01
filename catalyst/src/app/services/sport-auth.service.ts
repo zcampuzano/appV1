@@ -70,6 +70,11 @@ export class SportAuthService {
       return this.http.post(this.domain + '/sportAuthentication/updateOrganSeason', organization, this.httpOptions);
   }
 
+  updateSeasonGames(season) {
+      this.createAuthenticationHeaders();
+      return this.http.post(this.domain + '/sportAuthentication/updateSeasonGames', season, this.httpOptions);
+  }
+
   updateSeasonRoster(season) {
       this.createAuthenticationHeaders();
       return this.http.post(this.domain + '/sportAuthentication/updateSeasonRoster', season, this.httpOptions);

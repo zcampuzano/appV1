@@ -64,7 +64,7 @@
         <ion-col size="2">Pos</ion-col>
         <ion-col size="6">Name</ion-col>
         <ion-col size="2">#</ion-col>
-        <ion-col>Active</ion-col>
+        <ion-col>Stats</ion-col>
       </ion-row>
       <ion-row *ngFor="let athlete of athletes" class="row">
         <ion-col size="2">
@@ -76,8 +76,8 @@
         <ion-col size="2">
           {{ athlete.number }}
         </ion-col>
-        <ion-col>
-          <ion-toggle color="dark"></ion-toggle>
+        <ion-col size="2">
+          <ion-button fill="clear" (click)="onAthleteClick(athlete._id, athlete.firstname, athlete.lastname)"><ion-icon name="arrow-round-forward"></ion-icon></ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>

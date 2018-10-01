@@ -20,7 +20,7 @@ export class GamePage implements OnInit {
   processing;
   gameData;
   athleteArr = [];
-  disabled;
+  disabled = false;
 
   constructor(private http: HttpClient,
               private sportService: SportAuthService,
@@ -99,15 +99,65 @@ export class GamePage implements OnInit {
     });
   }
 
+  cancelGame() {
+      this.router.navigate(['/home']);
+  }
 
   onGameSubmit() {
       this.disableForm(); // Disable the form
-      const game = {
-          date: this.form.get('date').value,
-          away: this.form.get('away').value
+      const basketballSchema = {
+          PTA2 : 0
       };
 
-      // save game instance here
+      //todo check for existing game before creating new one
+      this.sportService.createBasketballSchema(basketballSchema).subscribe(data =>{
+          console.log(data);
+          if(data['success']) {
+              this.message = data['message'];
+              let date = `${this.form.controls['date'].value.year.text}-${this.form.controls['date'].value.month.text}-${this.form.controls['date'].value.day.text}`;
+              console.log(date);
+              const game = {
+                  date: date,
+                  home: {
+                      ID: data['organID'],
+                      athletes: this.athleteArr,
+                      stat: data['basketballSchemaID']
+                  },
+                  away: {
+                      ID: this.form.controls['away'].value,
+                      athletes: [],
+                      stat: null,
+                  }
+              };
+
+              const lastSeason = data['seasons'].seasons.length - 1;
+              const seasonID = data['seasons'].seasons[lastSeason];
+
+              this.sportService.createGame(game).subscribe(data => {
+                  if (data['success']) {
+                      this.message = data['message'];
+                      const seasonUpdate = {
+                          seasonID: seasonID,
+                          gameID: data['gameID'],
+                      };
+                      this.sportService.updateSeasonGames(seasonUpdate).subscribe(data => {
+                         if (data['success']) {
+                             this.message = data['message'];
+                             console.log(this.message);
+                             this.router.navigate(['/home']);
+                         }
+                      })
+
+                  } else {
+                      this.message = data['message'];
+                      console.log(this.message);
+                  }
+              })
+
+          } else {
+              this.message = data['message'];
+          }
+      });
 
   }
 

@@ -12,13 +12,12 @@ import { NotAuthGuard } from "./guards/not-auth.guard";
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
-import {GamePage} from "./game/game.page";
+import { AppRoutingModule } from './app-routing.module';;
 
 
 @NgModule({
-  declarations: [AppComponent, GamePage],
-  entryComponents: [GamePage],
+  declarations: [AppComponent],
+  entryComponents: [],
   imports: [
       BrowserModule,
       IonicModule.forRoot(),

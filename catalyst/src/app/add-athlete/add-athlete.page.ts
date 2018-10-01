@@ -149,7 +149,8 @@ export class AddAthletePage implements OnInit {
   }
 
   onAthleteClick(_id, firstname, lastname) {
-      this.router.navigate(['/dashboard' + '/' + firstname + lastname + '/' + _id]);
+      //todo add single athlete page for analytics
+      // this.router.navigate(['/dashboard' + '/' + firstname + lastname + '/' + _id]);
   }
 
   // Function to disable the registration form

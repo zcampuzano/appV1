@@ -134,21 +134,18 @@ module.exports = (router, session) => {
         if(!req.body.date) {
             res.json({ success: false, message: 'Please provide a date'});
         } else {
-            if(!req.body.athletes) {
-                res.json({ success: false, message: 'No players selected'});
-            } else {
-                if (!req.body.home) {
-                    res.json({success: false, message: 'No home team indicated'});
-                }
-                if (!req.body.away) {
-                    res.json({ success: false, message: 'No away team indicated'});
-                }
+
+            if (!req.body.home) {
+                res.json({success: false, message: 'No home team indicated'});
+            }
+
+            if (!req.body.away) {
+                res.json({ success: false, message: 'No away team indicated'});
             }
         }
 
         let game = new Game({
             date: req.body.date,
-            athletes: req.body.athletes,
             home: req.body.home,
             away: req.body.away
         });
@@ -161,15 +158,11 @@ module.exports = (router, session) => {
                         res.json({ success: false, message: err.errors.date.message }); // Return error
                     } else {
                         // Check if validation error is in the username field
-                        if (err.errors.athletes) {
-                            res.json({ success: false, message: err.errors.athletes.message}); // Return error
+                        if (err.errors.home) {
+                            res.json({ success : false, message : err.errors.home.message});
                         } else {
-                            if (err.errors.home) {
-                                res.json({ success : false, message : err.errors.home.message});
-                            } else {
-                                if (err.errors.away) {
-                                    res.json({success: false, message: err.errors.away.message});
-                                }
+                            if (err.errors.away) {
+                                res.json({success: false, message: err.errors.away.message});
                             }
                         }
                     }
@@ -177,7 +170,7 @@ module.exports = (router, session) => {
                     res.json({ success: false, message: 'Could not save game. Error: ', err }); // Return error if not related to validation
                 }
             } else {
-                res.json({ success: true, message: 'Game registered!', gameDate: game.date }); // Return success
+                res.json({ success: true, message: 'Game registered!', gameID: game._id, gameDate: game.date }); // Return success
             }
         });
 
@@ -401,9 +394,32 @@ module.exports = (router, session) => {
                    throw err;
                }
                console.log(doc);
-               res.json({ success: true, firstname: doc.seasons });
+               res.json({ success: true, seasons: doc.seasons });
            }
        );
+    });
+
+    router.post('/updateSeasonGames', (req, res) => {
+        if (!req.body.seasonID) {
+            console.log("no season ID");
+        }
+        Season.findOneAndUpdate(
+            {"_id": req.body.seasonID},
+            {
+                "$push": {
+                    games: req.body.gameID
+                }
+            },
+            {"new": true, "upsert": true},
+            function (err, doc) {
+                if (err) {
+                    res.json({ success: false, message: 'Could not add game to season' }); // Return error
+                    throw err;
+                }
+                console.log(doc);
+                res.json({ success: true, games: doc.games });
+            }
+        );
     });
 
 

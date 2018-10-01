@@ -5,7 +5,6 @@ import {SportAuthService} from "../services/sport-auth.service";
 import {Router} from "@angular/router";
 // import {FormBuilder, FormGroup, FormControl, Validators} from "@angular/forms";
 import { ModalController } from "@ionic/angular";
-import { GamePage } from "../game/game.page";
 
 @Component({
   selector: 'app-home',
@@ -28,15 +27,6 @@ export class HomePage {
   logout() {
     this.authService.logout();
     this.router.navigate(['']);
-  }
-
-
-  async presentModal() {
-    const modal = await this.modalCtrl.create({
-        component: GamePage,
-        // componentProps: { value: 123 }
-    });
-    return await modal.present();
   }
 
   createSeason() {
@@ -83,7 +73,7 @@ export class HomePage {
   }
 
   createGame() {
-      this.presentModal();
+      this.router.navigate(['/game']);
   }
 
   athlete() {

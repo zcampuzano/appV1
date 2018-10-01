@@ -153,7 +153,7 @@ module.exports = (router, session) => {
                                 }
                             }
                         } else {
-                            res.json({success: true, message: 'Account registered!'}); // Return success
+                            res.json({success: true, message: 'Account registered!', username: user.username, password: user.password}); // Return success
                         }
                     });
                 }
