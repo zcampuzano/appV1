@@ -8,6 +8,7 @@ const Schema = mongoose.Schema; // Import Schema from Mongoose
 //todo change required to true
 
 const gameStatSchema = new Schema({
+    game: { type: mongoose.Schema.Types.ObjectId, ref: 'Game' },
     athlete: { type: mongoose.Schema.Types.ObjectId, ref: 'Athlete' },
     PTA2 : { type  : Number, required : false },
     PTM2: { type  : Number, required : false },
