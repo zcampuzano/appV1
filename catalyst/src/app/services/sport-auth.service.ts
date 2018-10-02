@@ -48,6 +48,12 @@ export class SportAuthService {
       return this.http.post(this.domain + '/sportAuthentication/createGame', game, this.httpOptions);
   }
 
+  //Function to check for game instance
+  checkForGame(game) {
+      this.createAuthenticationHeaders();
+      return this.http.post(this.domain + '/sportAuthentication/checkForGame', game, this.httpOptions);
+  }
+
   // Function to create game stat
   createGameStat(gameStat) {
       this.createAuthenticationHeaders();

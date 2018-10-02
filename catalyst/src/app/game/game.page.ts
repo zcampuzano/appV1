@@ -113,31 +113,47 @@ export class GamePage implements OnInit {
           PTA2 : 0
       };
 
-      //todo check for existing game before creating new one
       //todo reset forms on submit or once game is complete?
       this.sportService.createBasketballSchema(basketballSchema).subscribe(data =>{
           console.log(data);
           if(data['success']) {
               this.message = data['message'];
               let date = `${this.form.controls['date'].value.year.text}-${this.form.controls['date'].value.month.text}-${this.form.controls['date'].value.day.text}`;
-              const game = {
-                  date: date,
-                  home: {
-                      ID: this.form.controls['home'].value,
-                      athletes: this.athleteArr,
-                      stat: data['basketballSchemaID']
-                  },
-                  away: {
-                      ID: this.form.controls['away'].value,
-                      athletes: [],
-                      stat: null,
-                  }
-              };
+
+              let game;
+              if (data['organID'] === this.form.controls['home'].value) {
+                  game = {
+                      date: date,
+                      home: {
+                          ID: this.form.controls['home'].value,
+                          athletes: this.athleteArr,
+                          stat: data['basketballSchemaID']
+                      },
+                      away: {
+                          ID: this.form.controls['away'].value,
+                      },
+                      h: true,
+                  };
+              } else {
+                  game = {
+                      date: date,
+                      home: {
+                          ID: this.form.controls['home'].value,
+                      },
+                      away: {
+                          ID: this.form.controls['away'].value,
+                          athletes: this.athleteArr,
+                          stat: data['basketballSchemaID'],
+                      },
+                      h: false,
+                  };
+              }
 
               const lastSeason = data['seasons'].seasons.length - 1;
               const seasonID = data['seasons'].seasons[lastSeason];
 
-              this.sportService.createGame(game).subscribe(data => {
+              this.sportService.checkForGame(game).subscribe(data => {
+                  console.log(data['message']);
                   if (data['success']) {
                       this.message = data['message'];
                       const seasonUpdate = {
@@ -145,19 +161,39 @@ export class GamePage implements OnInit {
                           gameID: data['gameID'],
                       };
                       this.sportService.updateSeasonGames(seasonUpdate).subscribe(data => {
-                         if (data['success']) {
-                             this.message = data['message'];
-                             console.log(this.message);
+                          if (data['success']) {
+                              this.message = data['message'];
+                              console.log(this.message);
 
-                             this.router.navigate(['/home']);
-                         }
+                              this.router.navigate(['/home']);
+                          }
                       })
-
                   } else {
-                      this.message = data['message'];
-                      console.log(this.message);
+                      this.sportService.createGame(game).subscribe(data => {
+                          console.log(data['message']);
+                          if (data['success']) {
+                              this.message = data['message'];
+                              const seasonUpdate = {
+                                  seasonID: seasonID,
+                                  gameID: data['gameID'],
+                              };
+                              this.sportService.updateSeasonGames(seasonUpdate).subscribe(data => {
+                                  if (data['success']) {
+                                      this.message = data['message'];
+                                      console.log(this.message);
+
+                                      this.router.navigate(['/home']);
+                                  }
+                              })
+
+                          } else {
+                              this.message = data['message'];
+                              console.log(this.message);
+                          }
+                      })
                   }
               })
+
 
           } else {
               this.message = data['message'];

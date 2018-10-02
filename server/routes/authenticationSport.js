@@ -131,6 +131,7 @@ module.exports = (router, session) => {
         Create Game Route
      ============== */
     router.post('/createGame', (req, res) => {
+
         if(!req.body.date) {
             res.json({ success: false, message: 'Please provide a date'});
         } else {
@@ -174,6 +175,56 @@ module.exports = (router, session) => {
             }
         });
 
+    });
+
+    /* ==============
+        Check and update game
+     ============== */
+    router.post('/checkForGame', (req, res) => {
+        if (req.body.h) {
+            Game.findOneAndUpdate(
+                { "date": req.body.date, "home.ID": req.body.home.ID, "away.ID": req.body.away.ID},
+                {
+                    "$set": {
+                        home: req.body.home
+                    }
+                },
+                {"new": true, "upsert": false},
+                function (err, doc) {
+                    if (err) {
+                        res.json({ success: false, message: 'Could not add home info to game' }); // Return error
+                        throw err;
+                    } else if (doc === null) {
+                        res.json({ success: false, message: 'Game doesnt exist' }); // Return error
+                    } else {
+                        console.log(doc);
+                        res.json({ success: true, game: doc, gameID: doc._id });
+                    }
+                }
+            );
+        } else {
+            Game.findOneAndUpdate(
+                { "date": req.body.date, "home.ID": req.body.home.ID, "away.ID": req.body.away.ID},
+                {
+                    "$set": {
+                        away: req.body.away
+                    }
+                },
+                {"new": true, "upsert": false},
+                function (err, doc) {
+                    if (err) {
+                        res.json({ success: false, message: 'Could not add away info to game' }); // Return error
+                        throw err;
+                    } else if (doc === null) {
+                        res.json({ success: false, message: 'Game doesnt exist' }); // Return error
+                    } else {
+                        console.log(doc);
+                        res.json({ success: true, game: doc, gameID: doc._id});
+                    }
+
+                }
+            );
+        }
     });
 
     /* ==============
@@ -350,7 +401,6 @@ module.exports = (router, session) => {
     /* ==============
         Update Season Roster
      ============== */
-
     router.post('/updateSeasonRoster', (req, res) => {
         if (!req.body.seasonID) {
             console.log("no ID");
@@ -400,6 +450,9 @@ module.exports = (router, session) => {
        );
     });
 
+    /* ==================
+        update Games in a season
+      ================= */
     router.post('/updateSeasonGames', (req, res) => {
         if (!req.body.seasonID) {
             console.log("no season ID");
@@ -423,6 +476,10 @@ module.exports = (router, session) => {
         );
     });
 
+
+    /* ==================
+        check to see if season already exists in organization
+      ================= */
     router.get('/checkForSeason', (req, res) => {
         User.findOne({ _id: req.decoded.userId }).select('organization').exec((err, organID) => {
             if (err) {
@@ -462,6 +519,13 @@ module.exports = (router, session) => {
                 }
             }
         })
+    });
+
+    /* ==================
+        check to see if game already exists
+      ================= */
+    router.get('/checkForGame', (req, res) => {
+
     });
 
     /* ===============================================================
