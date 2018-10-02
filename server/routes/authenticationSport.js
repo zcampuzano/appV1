@@ -268,6 +268,7 @@ module.exports = (router, session) => {
        Route to get all athletes
     =============================================================== */
     router.get('/getAthletes', (req, res) => {
+        //todo check for athletes in the current season
         User.findOne({ _id: req.decoded.userId }).select('organization').exec((err, organID) => {
             if (err) {
                 res.json({success: false, message: err}); // Return error
@@ -422,6 +423,46 @@ module.exports = (router, session) => {
         );
     });
 
+    router.get('/checkForSeason', (req, res) => {
+        User.findOne({ _id: req.decoded.userId }).select('organization').exec((err, organID) => {
+            if (err) {
+                res.json({success: false, message: err}); // Return error
+            } else {
+                if (!organID) {
+                    res.json({success: false, message: 'We do not have any organizations'}); // Return error, organs was not found in db
+                } else {
+                    Organization.findOne({ _id: organID.organization }).select('seasons').exec((err, seasons) => {
+                        if (err) {
+                            res.json({success: false, message: err}); // Return error
+                        } else {
+                            if (seasons.seasons.length === 0) {
+                                res.json({success: true, message: 'We do not have any seasons', season: false});
+                            } else {
+                                console.log(seasons.seasons);
+                                const lastSeason = seasons.seasons.length - 1;
+                                const seasonID = seasons.seasons[lastSeason];
+                                Season.findOne({_id: seasonID}).select('year').exec((err, seasonYear) => {
+                                    console.log(seasonYear);
+                                    if (err) {
+                                        res.json({success: false, message: err});
+                                    } else {
+                                        if (seasonYear.year === 2018) {
+                                            res.json({success: true, message: 'Season already exists', season: true});
+                                        } else {
+                                            res.json({success: true, message: 'Season does not exist yet', season: false});
+                                        }
+                                    }
+
+                                })
+                            }
+
+                        }
+                    })
+
+                }
+            }
+        })
+    });
 
     /* ===============================================================
     Route to change Athlete Info

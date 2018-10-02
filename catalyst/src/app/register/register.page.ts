@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators, FormControl} from "@angular/forms";
 import { RegisterAuthService } from "../services/register-auth.service";
 import { Router } from "@angular/router";
 import { ToastController } from "@ionic/angular";
+import { SportAuthService } from "../services/sport-auth.service";
 
 @Component({
   selector: 'app-register',
@@ -31,7 +32,8 @@ export class RegisterPage implements OnInit {
         private formBuilder: FormBuilder,
         private authService: RegisterAuthService,
         private router: Router,
-        private toastCtrl: ToastController
+        private toastCtrl: ToastController,
+        private sportService: SportAuthService
     ) {
         this.createForm();
         this.createOrganizationForm();
@@ -165,7 +167,7 @@ export class RegisterPage implements OnInit {
     // Function to validate password
     validatePassword(controls) {
         // Create a regular expression
-        const regExp = new RegExp(/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?=.*?[\W]).{8,35}$/);
+        const regExp = new RegExp(/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?=.*?[\W]).{7,35}$/);
         // Test password against regular expression
         if (regExp.test(controls.value)) {
             return null; // Return as valid password
@@ -188,7 +190,7 @@ export class RegisterPage implements OnInit {
 
     // Function to submit form
     onRegisterSubmit() {
-        console.log('69_420');
+
         this.processing = true; // Used to notify HTML that form is in processing, so that it can be disabled
         this.disableForm(); // Disable the form
         this.disableOrganizationForm();
@@ -196,17 +198,13 @@ export class RegisterPage implements OnInit {
         if (this.form.get('organization').value === 'New') {
             const organName = (this.organizationForm.controls['organizationname'].value);
             const organLoc = (this.organizationForm.controls['location'].value);
-            // const sportSchema = {
-            //   baseball : this.createSportComponent.form.get('baseball').value,
-            //   football : this.createSportComponent.form.get('football').value
-            // };
+
             const organization = {
                 organizationname : organName,
                 location : organLoc,
                 seasons : [],
             };
-            // console.log(sportSchema.baseball);
-            // console.log(sportSchema.football);
+
             this.authService.createOrganization(organization).subscribe(data => {
                 if (data['success']) {
                     this.messageClass = 'alert alert-success'; // Set a success class
@@ -222,7 +220,7 @@ export class RegisterPage implements OnInit {
                         password: this.form.get('password').value, // Password input field
                         role: this.isAdmin, // user/admin?
                         organization: organID, // new organization
-                        // sport : sportSchema
+
                     };
 
                     // Function from authentication service to register user
@@ -246,6 +244,7 @@ export class RegisterPage implements OnInit {
                             }, 2000);
                         }
                     });
+
 
                 } else {
                     if (!data['success']) {
@@ -299,6 +298,7 @@ export class RegisterPage implements OnInit {
         }
 
     }
+
 
     // Function to check if e-mail is taken
     checkEmail() {

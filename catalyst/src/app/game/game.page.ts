@@ -40,7 +40,9 @@ export class GamePage implements OnInit {
           // Date input
           date: [''],
           // Away team
-          away: ['']
+          away: [''],
+          // home team
+          home: [''],
       }, { validator: null});
   }
 
@@ -62,12 +64,14 @@ export class GamePage implements OnInit {
   enableForm() {
       this.form.controls['date'].enable();
       this.form.controls['away'].enable();
+      this.form.controls['home'].enable();
       this.disabled = false;
   }
 
   disableForm() {
       this.form.controls['date'].disable();
       this.form.controls['away'].disable();
+      this.form.controls['home'].disable();
       this.disabled = true;
   }
 
@@ -110,16 +114,16 @@ export class GamePage implements OnInit {
       };
 
       //todo check for existing game before creating new one
+      //todo reset forms on submit or once game is complete?
       this.sportService.createBasketballSchema(basketballSchema).subscribe(data =>{
           console.log(data);
           if(data['success']) {
               this.message = data['message'];
               let date = `${this.form.controls['date'].value.year.text}-${this.form.controls['date'].value.month.text}-${this.form.controls['date'].value.day.text}`;
-              console.log(date);
               const game = {
                   date: date,
                   home: {
-                      ID: data['organID'],
+                      ID: this.form.controls['home'].value,
                       athletes: this.athleteArr,
                       stat: data['basketballSchemaID']
                   },
@@ -144,6 +148,7 @@ export class GamePage implements OnInit {
                          if (data['success']) {
                              this.message = data['message'];
                              console.log(this.message);
+
                              this.router.navigate(['/home']);
                          }
                       })

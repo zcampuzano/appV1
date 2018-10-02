@@ -28,6 +28,7 @@ export class AddAthletePage implements OnInit {
 
   ngOnInit() {
     this.getAthletes();
+    this.checkSeason();
   }
 
   createForm() {
@@ -51,9 +52,56 @@ export class AddAthletePage implements OnInit {
       }, { validator: null});
   }
 
-  athleteActive() {
-      return true;
+  checkSeason() {
+    this.sportService.checkForSeason().subscribe(data => {
+        if (data['success'] && !data['season']) {
+            this.createSeason();
+        }
+    })
   }
+
+  createSeason() {
+    const basketballSchema = {
+        PTA2 : 0
+    }
+    this.sportService.createBasketballSchema(basketballSchema).subscribe(data => {
+        console.log(data);
+        if(data['success']) {
+            this.message = data['message'];
+            const season = {
+                year: 2018,
+                basketballStat: data['basketballSchemaID'],
+                athletes: [],
+                games: []
+            };
+
+            const organID = data['organID'];
+
+            this.sportService.createSeason(season).subscribe(data => {
+                if (data['success']) {
+                    this.message = data['message'];
+                    const orgUpdate = {
+                        organID: organID,
+                        seasonID: data['seasonID']
+                    };
+                    this.sportService.updateOrgSeason(orgUpdate).subscribe(data => {
+                        if (data['success']) {
+                            this.message = data['message'];
+                        }
+                    })
+
+                } else {
+                    this.message = data['message'];
+                }
+
+            })
+        } else {
+            this.message = data['message'];
+        }
+    });
+
+  }
+
 
   // Function to validate username is proper format
   validateUsername(controls) {

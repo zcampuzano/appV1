@@ -16,7 +16,6 @@
       <ion-label>Active Players</ion-label>
     </ion-item>
 
-
     <ion-list>
       <ion-grid>
         <ion-row class="row" style="font-weight: bold;">
@@ -42,8 +41,16 @@
       </ion-grid>
     </ion-list>
 
+    <ion-item [ngClass]="{'has-error': form.controls['home'].errors && form.controls['home'].dirty, 'has-success': form.controls['home'].errors}">
+      <ion-label>Home Team</ion-label>
+      <ion-select class="form-control" formControlName="home">
+        <ion-select-option *ngFor="let organization of organizations" value="{{ organization._id }}">
+          {{ organization.organizationname }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
 
-    <ion-item [ngClass]="{'has-error': form.controls['away'].errors && form.controls['away'].dirty, 'has-success': form.controls['away'].errors}">
+    <ion-item padding-bottom [ngClass]="{'has-error': form.controls['away'].errors && form.controls['away'].dirty, 'has-success': form.controls['away'].errors}">
       <ion-label>Away Team</ion-label>
       <ion-select class="form-control" formControlName="away">
         <ion-select-option *ngFor="let organization of organizations" value="{{ organization._id }}">
