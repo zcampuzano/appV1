@@ -26,6 +26,8 @@ export class AddAthletePage implements OnInit {
       this.createForm();
   }
 
+  //todo view team stats
+
   ngOnInit() {
     this.getAthletes();
     this.checkSeason();
@@ -197,8 +199,7 @@ export class AddAthletePage implements OnInit {
   }
 
   onAthleteClick(_id, firstname, lastname) {
-      //todo add single athlete page for analytics
-      // this.router.navigate(['/dashboard' + '/' + firstname + lastname + '/' + _id]);
+      this.router.navigate(['/athletes' + '/' + firstname + lastname + '/' + _id]);
   }
 
   // Function to disable the registration form

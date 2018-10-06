@@ -10,18 +10,20 @@ const Schema = mongoose.Schema; // Import Schema from Mongoose
 const gameStatSchema = new Schema({
     game: { type: mongoose.Schema.Types.ObjectId, ref: 'Game' },
     athlete: { type: mongoose.Schema.Types.ObjectId, ref: 'Athlete' },
-    PTA2 : { type  : Number, required : false },
-    PTM2: { type  : Number, required : false },
-    PTA3 : { type  : Number, required : false },
-    AST : { type  : Number, required : false },
-    BLK : { type  : Number, required : false },
-    DRB : { type  : Number, required : false },
-    FTA : { type  : Number, required : false },
-    FTM : { type  : Number, required : false },
-    ORB : { type  : Number, required : false },
-    PF : { type  : Number, required : false },
-    STL : { type  : Number, required : false },
-    TO : { type  : Number, required : false },
+    stat: {
+        PTA2 : { type: Number, required : false },
+        PTM2: { type  : Number, required : false },
+        PTA3 : { type  : Number, required : false },
+        AST : { type  : Number, required : false },
+        BLK : { type  : Number, required : false },
+        DRB : { type  : Number, required : false },
+        FTA : { type  : Number, required : false },
+        FTM : { type  : Number, required : false },
+        ORB : { type  : Number, required : false },
+        PF : { type  : Number, required : false },
+        STL : { type  : Number, required : false },
+        TO : { type  : Number, required : false },
+    },
 });
 
 

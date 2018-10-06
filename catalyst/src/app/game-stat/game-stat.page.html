@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button></ion-back-button>
+    <ion-title>Game Metrics</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-item>
+    <ion-list>
+      <ion-item class="list-group-item">{{ name }}</ion-item>
+      <ion-item *ngIf="player" class="list-group-item">Number: {{number}}</ion-item>
+      <ion-item *ngIf="player" class="list-group-item">Position: {{ position }}</ion-item>
+    </ion-list>
+  </ion-item>
+
+  <ion-item>
+    <ion-list class="list-group">
+      <ion-item class="list-group-item" *ngFor="let field of bball_schema_props; let i = index">
+        {{field}} : {{bball_schema_vals[i]}}
+      </ion-item>
+    </ion-list>
+  </ion-item>
+</ion-content>

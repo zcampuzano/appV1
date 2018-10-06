@@ -220,15 +220,36 @@ module.exports = (router, session) => {
             res.json({success: false, message: 'Organization was not provided'}); // Return error
         } else {
             // Search for user's e-mail in database;
-            Organization.findOne({organizationname: req.params.organizationname}, (err, user) => {
+            Organization.findOne({organizationname: req.params.organizationname}, (err, organization) => {
                 if (err) {
                     res.json({success: false, message: err}); // Return connection error
                 } else {
                     // Check if user's e-mail is taken
-                    if (user) {
+                    if (organization) {
                         res.json({success: false, message: 'Organization is already taken'}); // Return as taken e-mail
                     } else {
                         res.json({success: true, message: 'Organization is available'}); // Return as available e-mail
+                    }
+                }
+            });
+        }
+    });
+
+    router.get('/getOrganization/:id', (req, res) => {
+        // Check if email was provided in paramaters
+        if (!req.params.id) {
+            res.json({success: false, message: 'Organization was not provided'}); // Return error
+        } else {
+            // Search for user's e-mail in database;
+            Organization.findOne({ _id: req.params.id }, (err, organization) => {
+                if (err) {
+                    res.json({success: false, message: err}); // Return connection error
+                } else {
+                    // Check if user's e-mail is taken
+                    if (!organization) {
+                        res.json({success: false, message: 'Organization does not exist'}); // Return as taken e-mail
+                    } else {
+                        res.json({success: true, message: 'Organization exists', organization: organization}); // Return as available e-mail
                     }
                 }
             });

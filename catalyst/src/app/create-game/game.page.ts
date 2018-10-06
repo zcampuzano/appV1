@@ -164,10 +164,10 @@ export class GamePage implements OnInit {
                           if (data['success']) {
                               this.message = data['message'];
                               console.log(this.message);
-
                               this.router.navigate(['/home']);
                           }
                       })
+                      this.createGameStat(data['gameID']);
                   } else {
                       this.sportService.createGame(game).subscribe(data => {
                           console.log(data['message']);
@@ -185,6 +185,7 @@ export class GamePage implements OnInit {
                                       this.router.navigate(['/home']);
                                   }
                               })
+                              this.createGameStat(data['gameID']);
 
                           } else {
                               this.message = data['message'];
@@ -202,5 +203,22 @@ export class GamePage implements OnInit {
 
   }
 
+  createGameStat(gameID) {
+
+      for(let i = 0; i < this.athleteArr.length; i++) {
+          const gameStat = {
+              game: gameID,
+              athlete: this.athleteArr[i],
+          };
+          this.sportService.createGameStat(gameStat).subscribe(data => {
+              if (data['success']) {
+                  this.message = data['message'];
+              } else {
+                  this.message = data['message'];
+              }
+          })
+      }
+
+  }
 
 }

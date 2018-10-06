@@ -235,9 +235,12 @@ module.exports = (router, session) => {
             res.json({success: false, message: 'No athlete'})
         }
         let gameStat = new GameStat({
+            game: req.body.game,
             athlete : req.body.athlete,
-            PTA2 : 0, PTM2 : 0, PTA3 : 0, AST : 0, BLK : 0, DRB : 0,
-            FTA : 0, FTM : 0, ORB : 0, PF : 0, STL : 0, TO : 0
+            stat: {
+                PTA2 : 0, PTM2 : 0, PTA3 : 0, AST : 0, BLK : 0, DRB : 0,
+                FTA : 0, FTM : 0, ORB : 0, PF : 0, STL : 0, TO : 0
+            },
         });
 
         //todo change from zeros
@@ -343,6 +346,84 @@ module.exports = (router, session) => {
         })
     });
 
+    router.get('/getGameAthletes/:id', (req, res) => {
+        Game.findOne({ _id: req.params.id }).select('home.athletes away.athletes').exec((err, athletes) => {
+            if (err) {
+                res.json({success: false, message: err}); // Return error
+            } else {
+                if (!athletes) {
+                    res.json({success: false, message: 'No athletes'}); // Return error, organs was not found in db
+                } else {
+                    console.log(athletes);
+                    Athlete.find({ "$or": [{ _id: athletes.home.athletes }, { _id: athletes.away.athletes }] }).select('firstname lastname number position organization _id').exec((err, allAthlete) => {
+                        if (err) {
+                            res.json({success: false, message: err}); // Return error
+                        } else {
+                            if (!allAthlete) {
+                                res.json({success: false, message: 'We do not have any athletes'}); // Return error, organs was not found in db
+                            } else {
+                                res.json({success: true, athleteList: allAthlete})
+                            }
+                        }
+                    })
+                }
+            }
+        })
+    });
+
+    router.get('/getGames', (req, res) => {
+        User.findOne({ _id: req.decoded.userId }).select('organization').exec((err, organID) => {
+            if (err) {
+                res.json({sucess: false, message: err});
+            } else {
+                if (!organID) {
+                    res.json({success: false, message: 'We do not have any organizations'}); // Return error, organs was not found in db
+                } else {
+                    Game.find({ "$or": [{ "home.ID": organID.organization }, { "away.ID": organID.organization }] }).select('date home away').exec((err, allGames) => {
+                        if (err) {
+                            res.json({success: false, message: err});
+                        } else {
+                            if (!allGames) {
+                                res.json({success: false, message: 'We do not have any games'});
+                            } else {
+                                res.json({success: true, gameList: allGames});
+                            }
+                        }
+                    })
+                }
+            }
+
+        })
+    });
+
+    router.get('/getGame/:id', (req, res) => {
+       Game.findOne({ _id: req.params.id }).select('date home away').exec((err, game) => {
+           if (err) {
+               res.json({ success: false, message: err });
+           } else {
+               if (!game) {
+                   res.json({success: false, message: 'No game' });
+               } else {
+                   res.json({success: true, game: game});
+               }
+           }
+       })
+    });
+
+    router.get('/getGameStat/:id', (req, res) => {
+       GameStat.findOne({ game: req.params.id }).exec((err, gameStat) => {
+           if (err) {
+               res.json({ success: false, message: err });
+           } else {
+               if (!gameStat) {
+                   res.json({ success: false, message: 'Game does not exist' });
+               } else {
+                   res.json({ success: true, gameStat: gameStat.stat });
+               }
+           }
+       })
+    });
+
 
     /* ===============================================================
        Route to get user
@@ -367,7 +448,7 @@ module.exports = (router, session) => {
    =============================================================== */
     router.get('/getAthlete/:id', (req, res) => {
         // console.log(req.params.id)
-        Athlete.findOne({ _id: req.params.id }).select('firstname lastname basketballStat').exec((err, athlete) => {
+        Athlete.findOne({ _id: req.params.id }).select('firstname lastname number position basketballStat').exec((err, athlete) => {
             if (err) {
                 res.json({ success: false, message: err }); // Return error
             } else {
@@ -521,12 +602,6 @@ module.exports = (router, session) => {
         })
     });
 
-    /* ==================
-        check to see if game already exists
-      ================= */
-    router.get('/checkForGame', (req, res) => {
-
-    });
 
     /* ===============================================================
     Route to change Athlete Info

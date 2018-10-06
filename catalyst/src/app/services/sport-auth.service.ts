@@ -60,6 +60,12 @@ export class SportAuthService {
       return this.http.post(this.domain + '/sportAuthentication/createGameStat', gameStat, this.httpOptions);
   }
 
+  // Function to get gameStat
+  getGameStat(id) {
+      this.createAuthenticationHeaders();
+      return this.http.get(this.domain + '/sportAuthentication/getGameStat/' + id, this.httpOptions);
+  }
+
   // Function to create basketball average stat schema
   createBasketballSchema(basketballSchema) {
       this.createAuthenticationHeaders(); // Create headers before sending to API
@@ -75,6 +81,11 @@ export class SportAuthService {
   getAthletes() {
       this.createAuthenticationHeaders(); // Create headers before sending to API
       return this.http.get(this.domain + '/sportAuthentication/getAthletes', this.httpOptions);
+  }
+
+  getGames() {
+      this.createAuthenticationHeaders();
+      return this.http.get(this.domain + '/sportAuthentication/getGames', this.httpOptions);
   }
 
   updateOrgSeason(organization) {
@@ -100,6 +111,16 @@ export class SportAuthService {
   getAthlete(id) {
       this.createAuthenticationHeaders(); // Create headers before sending to API
       return this.http.get(this.domain + '/sportAuthentication/getAthlete/' + id, this.httpOptions);
+  }
+
+  getGameAthletes(id) {
+      this.createAuthenticationHeaders();
+      return this.http.get(this.domain + '/sportAuthentication/getGameAthletes/' + id, this.httpOptions);
+  }
+
+  getGame(id) {
+      this.createAuthenticationHeaders();
+      return this.http.get(this.domain + '/sportAuthentication/getGame/' + id, this.httpOptions);
   }
 
   getBasketballStat(id) {

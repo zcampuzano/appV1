@@ -69,6 +69,12 @@ export class RegisterAuthService {
         return this.http.get(this.domain + '/authentication/checkOrganization/' + organizationname);
     }
 
+    // Function to get organization details
+    getOrganization(organID) {
+      this.createAuthenticationHeaders();
+      return this.http.get(this.domain + '/authentication/getOrganization/' + organID, this.httpOptions);
+    }
+
     // Function to login user
     login(user) {
         return this.http.post(this.domain + '/authentication/login', user);

@@ -20,8 +20,18 @@ export class AppComponent {
       },
       {
           title: 'Roster',
-          url: '/add-athlete',
+          url: '/athletes',
           icon: 'list'
+      },
+      {
+          title: 'Games',
+          url: '/games',
+          icon: 'calendar'
+      },
+      {
+          title: 'My Account',
+          url: '/profile',
+          icon: 'contact',
       }
   ];
 
