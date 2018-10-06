@@ -1,9 +1,66 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>profile</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button color="dark"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>My Account</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
+  <ion-item no-margin>
+    <h2>{{ firstname }} {{ lastname }}</h2>
+  </ion-item>
+  <ion-list lines="full">
+    <ion-item>
+      <p>Username: {{ username }}</p>
+      <ion-button slot="end" (click)="editUsername = !editUsername">Edit</ion-button>
+    </ion-item>
+    <ion-item *ngIf="editUsername">
+      <ion-label>
+        New Username:
+      </ion-label>
+      <ion-input id="inputUserName" type="text" name="username"></ion-input>
+      <ion-button slot="end" (click)="changeUsername()">Save</ion-button>
+    </ion-item>
+    <ion-item>
+      <p>Email: {{ email }}</p>
+      <ion-button slot="end" (click)="editEmail = !editEmail">Edit</ion-button>
+    </ion-item>
+    <ion-item *ngIf="editEmail">
+      <ion-label>
+        New Email:
+      </ion-label>
+      <ion-input></ion-input>
+      <ion-button slot="end">Save</ion-button>
+    </ion-item>
+    <ion-item>
+      <p>Password: ******** </p>
+      <ion-button slot="end" (click)="editPassword = !editPassword">Edit</ion-button>
+    </ion-item>
+    <ion-item *ngIf="editPassword">
+      <ion-label>
+        Old Password:
+      </ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+    <ion-item *ngIf="editPassword">
+      <ion-label>
+        New Password:
+      </ion-label>
+      <ion-input></ion-input>
+    </ion-item>
+    <ion-item *ngIf="editPassword">
+      <ion-label>
+        Confirm Password:
+      </ion-label>
+      <ion-input></ion-input>
+      <ion-button slot="end">Save</ion-button>
+    </ion-item>
+    <ion-item>
+      <p>Organization: {{ organizationname }}</p>
+    </ion-item>
+  </ion-list>
+
 
 </ion-content>

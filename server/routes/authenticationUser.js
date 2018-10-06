@@ -302,7 +302,7 @@ module.exports = (router, session) => {
 
     /* ===============================================================
     Route to get all organization
-  =============================================================== */
+    =============================================================== */
     router.post('/changeUsername', (req, res) => {
         if (!req.body.identity) {
             console.log("no ID");
@@ -322,6 +322,32 @@ module.exports = (router, session) => {
                 }
                 console.log(doc);
                 res.json({success: true, username: doc.username});
+            }
+        );
+    });
+
+    /* ===============================================================
+    Route to get all organization
+    =============================================================== */
+    router.post('/changeEmail', (req, res) => {
+        if (!req.body.identity) {
+            console.log("no ID");
+        }
+        User.findOneAndUpdate(
+            {"_id": req.body.identity},
+            {
+                "$set": {
+                    "email": req.body.newEmail,
+                }
+            },
+            {"new": true, "upsert": true},
+            function (err, doc) {
+                if (err) {
+                    res.json({success: false, message: 'Could not change email'}); // Return error, organs was not found in db
+                    throw err;
+                }
+                console.log(doc);
+                res.json({success: true, email: doc.email});
             }
         );
     });
@@ -355,7 +381,7 @@ module.exports = (router, session) => {
     =============================================================== */
     router.get('/profile', (req, res) => {
         // Search for user in database
-        User.findOne({_id: req.decoded.userId}).select('username email').exec((err, user) => {
+        User.findOne({_id: req.decoded.userId}).exec((err, user) => {
             // Check if error connecting
             if (err) {
                 res.json({success: false, message: err}); // Return error
