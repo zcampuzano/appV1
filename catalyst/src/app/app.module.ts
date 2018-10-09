@@ -13,18 +13,20 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';;
-
+import { DragAndDropModule } from "angular-draggable-droppable";
+import { NgCircleProgressModule } from "ng-circle-progress";
 
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
       BrowserModule,
+      DragAndDropModule,
       IonicModule.forRoot(),
       AppRoutingModule,
       HttpClientModule,
       FormsModule,
-      ReactiveFormsModule
+      ReactiveFormsModule,
   ],
   providers: [
     StatusBar,

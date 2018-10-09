@@ -6,6 +6,8 @@ import { RouterModule } from '@angular/router';
 import { HttpClientModule } from "@angular/common/http";
 
 import { HomePage } from './home.page';
+import { NgCircleProgressModule } from "ng-circle-progress";
+import { DragAndDropModule } from "angular-draggable-droppable";
 
 @NgModule({
   imports: [
@@ -14,6 +16,7 @@ import { HomePage } from './home.page';
     ReactiveFormsModule,
     HttpClientModule,
     IonicModule,
+    DragAndDropModule,
     RouterModule.forChild([
       {
         path: '',

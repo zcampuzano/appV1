@@ -1,1 +1,69 @@
+.no-scroll .scroll-content{
+  overflow: hidden;
+}
+.athlete1 {
+  top: -57.5vh;
+  padding-left: 6vw;
+  padding-right: 5vw;
+  z-index:2;
+}
+.athlete2 {
+  top: -57.5vh;
+  padding-right: 5vw;
+  z-index:2;
+}
+.athlete3 {
+  top: -57.5vh;
+  padding-right: 5vw;
+  z-index:2; }
+.athlete4 {
+  top: -57.5vh;
+  padding-right: 5vw;
+  z-index:2;}
+.athlete5 {
+  top: -57.5vh;
+  //left: 25vw;
+  z-index:2; }
 
+.drop1 {
+  height: 7vh;
+  background-color: green;
+  bottom: 40vh;
+  z-index: 1;
+}
+.drop2 {
+  height: 42vh;
+  bottom: 61vh;
+  border-radius: 50%;
+  background-color: green;
+}
+.drop3 {
+  height: 40vh;
+  background-color: red;
+  z-index: 0;
+}
+[mwlDraggable] {
+  position: relative;
+  z-index: 1;
+  float: left;
+}
+[mwlDroppable] {
+  //background-color: green;
+  position: relative;
+  //border-radius: 50%;
+  //height: 50vh;
+  //bottom: -40vh;
+}
+[mwlDraggable],[mwlDroppable] {
+  color: white;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.dropOverActive2 {
+  background-color: lightgreen;
+}
+.dropOverActive3 {
+  background-color: lightcoral;
+}

@@ -1,15 +1,34 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button color="dark"></ion-menu-button>
-    </ion-buttons>
+    <ion-menu-button color="dark" slot="start"></ion-menu-button>
     <ion-title>
       Court
     </ion-title>
+    <ion-button (click)="createGame()" slot="end">+ Game</ion-button>
   </ion-toolbar>
+
 </ion-header>
 
-<ion-content padding>
-  <ion-button (click)="createGame()">Start Game</ion-button>
+<ion-content>
+
+  <ion-list lines="none">
+    <ion-item class="drop3" [class.dropOverActive3]="dropOverActive3" mwlDroppable
+              (dragEnter)="dropOverActive3 = true"
+              (dragLeave)="dropOverActive3 = false" (drop)="onDrop3($event)"></ion-item>
+    <ion-item class="drop1" [class.dropOverActive2]="dropOverActive2" mwlDroppable
+              (dragEnter)="dropOverActive2 = true; dropOverActive3 = false"
+              (dragLeave)="dropOverActive2 = false; dropOverActive3 = true" (drop)="onDrop2($event)"></ion-item>
+    <ion-item class="drop2" [class.dropOverActive2]="dropOverActive2" mwlDroppable
+              (dragEnter)="dropOverActive2 = true; dropOverActive3 = false"
+              (dragLeave)="dropOverActive2 = false; dropOverActive3 = true" (drop)="onDrop2($event)"></ion-item>
+  </ion-list>
+
+  <ion-fab-button class='athlete1' (dragStart)="dragStart($event)" (click)="pressEvent($event)" (dragEnd)="dragEnd($event)" mwlDraggable >1</ion-fab-button>
+  <ion-fab-button class ='athlete2' (dragStart)="dragStart($event)" (click)="pressEvent($event)" (dragEnd)="dragEnd($event)" mwlDraggable >2</ion-fab-button>
+  <ion-fab-button class='athlete3' (dragStart)="dragStart($event)" (click)="pressEvent($event)" (dragEnd)="dragEnd($event)" mwlDraggable >3</ion-fab-button>
+  <ion-fab-button class='athlete4' (dragStart)="dragStart($event)" (click)="pressEvent($event)" (dragEnd)="dragEnd($event)" mwlDraggable >4</ion-fab-button>
+  <ion-fab-button class='athlete5' (dragStart)="dragStart($event)" (click)="pressEvent($event)" (dragEnd)="dragEnd($event)" mwlDraggable >5</ion-fab-button>
+
+
 </ion-content>
 

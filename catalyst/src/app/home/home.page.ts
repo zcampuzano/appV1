@@ -5,6 +5,7 @@ import {SportAuthService} from "../services/sport-auth.service";
 import {Router} from "@angular/router";
 // import {FormBuilder, FormGroup, FormControl, Validators} from "@angular/forms";
 
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -14,7 +15,15 @@ export class HomePage {
   orgData = null;
   message;
   date;
-
+  deg360 = 'deg360';
+  top;
+  right;
+  webkitTransform;
+  adddeg45Class: boolean = true;
+  overlayHidden: boolean = true;
+  droppedData: string;
+  dropOverActive2;
+  dropOverActive3;
 
   constructor(public http: HttpClient,
               private authService: RegisterAuthService,
@@ -24,6 +33,37 @@ export class HomePage {
 
   createGame() {
       this.router.navigate(['/game']);
+  }
+
+  dragEnd(event) {
+        console.log('Element was dragged end', event);
+
+        this.right = 20;
+  }
+
+  pressEvent(event){
+        event.preventDefault();
+        this.deg360=" ";
+        console.log('Element was tapped', event);
+        ;
+
+  }
+
+  onDrop2(event){
+        console.log('Element was droppped 2', event);
+        this.dropOverActive2 = false;
+        this.dropOverActive3 = false;
+  }
+
+  onDrop3(event){
+      console.log('Element was droppped 3', event);
+      this.dropOverActive2 = false;
+      this.dropOverActive3 = false;
+  }
+
+  dragStart(event){
+        console.log('drag started', event);
+
   }
 
 
