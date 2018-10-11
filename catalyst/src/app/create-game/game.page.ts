@@ -4,6 +4,7 @@ import {RegisterAuthService} from "../services/register-auth.service";
 import {SportAuthService} from "../services/sport-auth.service";
 import {Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup, FormArray} from "@angular/forms";
+import {ToastController} from "@ionic/angular";
 
 @Component({
   selector: 'app-game',
@@ -26,7 +27,8 @@ export class GamePage implements OnInit {
               private sportService: SportAuthService,
               private authService: RegisterAuthService,
               private router: Router,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private toastCtrl: ToastController) {
     this.createForm();
     this.generateOrgans();
     this.getAthletes();
@@ -98,7 +100,7 @@ export class GamePage implements OnInit {
             // this.processing = false; // Re-enable submit button
         } else {
             this.athletes = data['athleteList'];
-            console.log(this.athletes);
+            // console.log(this.athletes);
         }
     });
   }
@@ -107,19 +109,41 @@ export class GamePage implements OnInit {
       this.router.navigate(['/home']);
   }
 
+    // Toast message
+    async presentToast() {
+        const toast = await this.toastCtrl.create({
+            message: this.message,
+            duration: 2000,
+            position: 'top'
+        });
+        toast.present();
+    }
+
   onGameSubmit() {
       this.disableForm(); // Disable the form
+      // FORM CHECKS
+      let date;
+      if (this.form.controls['date'].value === "") {
+          this.message = 'Please select a date';
+          this.presentToast();
+          this.enableForm();
+          return;
+      }
+      if (this.form.controls['home'].value == this.form.controls['away'].value) {
+          this.message = "Home and Away teams cannot be the same"
+          this.presentToast();
+          this.enableForm();
+          return;
+      }
       const basketballSchema = {
           PTA2 : 0
       };
-
       //todo reset forms on submit or once game is complete?
       this.sportService.createBasketballSchema(basketballSchema).subscribe(data =>{
-          console.log(data);
+          // console.log(data);
           if(data['success']) {
               this.message = data['message'];
-              let date = `${this.form.controls['date'].value.year.text}-${this.form.controls['date'].value.month.text}-${this.form.controls['date'].value.day.text}`;
-
+              date = `${this.form.controls['date'].value.year.text}-${this.form.controls['date'].value.month.text}-${this.form.controls['date'].value.day.text}`;
               let game;
               if (data['organID'] === this.form.controls['home'].value) {
                   game = {
@@ -166,7 +190,7 @@ export class GamePage implements OnInit {
                               console.log(this.message);
                               this.router.navigate(['/home']);
                           }
-                      })
+                      });
                       this.createGameStat(data['gameID']);
                   } else {
                       this.sportService.createGame(game).subscribe(data => {
@@ -189,6 +213,7 @@ export class GamePage implements OnInit {
 
                           } else {
                               this.message = data['message'];
+                              this.presentToast();
                               console.log(this.message);
                           }
                       })
@@ -198,6 +223,7 @@ export class GamePage implements OnInit {
 
           } else {
               this.message = data['message'];
+              this.presentToast();
           }
       });
 

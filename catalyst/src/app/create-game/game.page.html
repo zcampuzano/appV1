@@ -44,8 +44,11 @@
     <ion-item [ngClass]="{'has-error': form.controls['home'].errors && form.controls['home'].dirty, 'has-success': form.controls['home'].errors}">
       <ion-label>Home Team</ion-label>
       <ion-select class="form-control" formControlName="home">
-        <ion-select-option *ngFor="let organization of organizations" value="{{ organization._id }}">
-          {{ organization.organizationname }}
+        <ion-select-option *ngFor="let organization of organizations"
+                           value="{{ organization._id }}">
+          <ion-item>
+            {{ organization.organizationname }}
+          </ion-item>
         </ion-select-option>
       </ion-select>
     </ion-item>
@@ -53,8 +56,11 @@
     <ion-item padding-bottom [ngClass]="{'has-error': form.controls['away'].errors && form.controls['away'].dirty, 'has-success': form.controls['away'].errors}">
       <ion-label>Away Team</ion-label>
       <ion-select class="form-control" formControlName="away">
-        <ion-select-option *ngFor="let organization of organizations" value="{{ organization._id }}">
-          {{ organization.organizationname }}
+        <ion-select-option *ngFor="let organization of organizations"
+                           value="{{ organization._id }}">
+          <ion-item>
+            {{ organization.organizationname }}
+          </ion-item>
         </ion-select-option>
       </ion-select>
     </ion-item>
