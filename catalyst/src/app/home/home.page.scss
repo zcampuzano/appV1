@@ -1,47 +1,54 @@
-.no-scroll .scroll-content{
-  overflow: hidden;
-}
 .athlete1 {
-  top: -57.5vh;
-  padding-left: 6vw;
-  padding-right: 5vw;
+  margin-top: 10vh;
+  margin-left: 3vw;
   z-index:2;
 }
 .athlete2 {
-  top: -57.5vh;
-  padding-right: 5vw;
+  //top: 15vh;
+  margin-left: 23vw;
   z-index:2;
 }
 .athlete3 {
-  top: -57.5vh;
-  padding-right: 5vw;
-  z-index:2; }
+  margin-left: 43vw;
+  z-index:2;
+}
 .athlete4 {
-  top: -57.5vh;
-  padding-right: 5vw;
-  z-index:2;}
+  // top: -57.5vh;
+  margin-left: 63vw;
+  z-index:2;
+}
 .athlete5 {
-  top: -57.5vh;
-  //left: 25vw;
+  // top: -57.5vh;
+  margin-left: 83vw;
   z-index:2; }
 
 .drop1 {
-  height: 7vh;
-  background-color: green;
-  bottom: 40vh;
+  height: 9vh;
+  width: 88vw;
+  margin-left: 6vw;
+  margin-right: 6vw;
+  background-color: darkslategray;
+  bottom: 1vh;
   z-index: 1;
 }
 .drop2 {
-  height: 42vh;
-  bottom: 61vh;
-  border-radius: 50%;
-  background-color: green;
+  height: 22vh;
+  width: 88vw;
+  margin-left: 6vw;
+  margin-right: 6vw;
+  bottom: 2vh;
+  border-bottom-right-radius: 100vw;
+  border-bottom-left-radius: 100vw;
+  background-color: darkslategray;
+  z-index: 1;
 }
 .drop3 {
-  height: 40vh;
-  background-color: red;
+  height: 44vh;
+  bottom: 34vh;
+  background-color: lightslategray;
   z-index: 0;
 }
+
 [mwlDraggable] {
   position: relative;
   z-index: 1;
@@ -62,8 +69,8 @@
   justify-content: center;
 }
 .dropOverActive2 {
-  background-color: lightgreen;
+  background-color: midnightblue;
 }
 .dropOverActive3 {
-  background-color: lightcoral;
+  background-color: midnightblue;
 }
