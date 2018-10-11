@@ -27,6 +27,7 @@ export class RegisterAuthService {
         };
     }
 
+
     createRegisterToken() {
         return this.http.get(this.domain + '/authentication/createRegisterToken');
     }

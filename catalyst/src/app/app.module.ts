@@ -12,9 +12,10 @@ import { NotAuthGuard } from "./guards/not-auth.guard";
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';;
+import { AppRoutingModule } from './app-routing.module';
 import { DragAndDropModule } from "angular-draggable-droppable";
 import { NgCircleProgressModule } from "ng-circle-progress";
+import { AthleteFabComponent } from './athlete-fab/athlete-fab.component';
 
 @NgModule({
   declarations: [AppComponent],

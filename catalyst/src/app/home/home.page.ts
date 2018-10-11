@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 // import {FormBuilder, FormGroup, FormControl, Validators} from "@angular/forms";
 
 
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -27,8 +28,7 @@ export class HomePage {
 
   constructor(public http: HttpClient,
               private authService: RegisterAuthService,
-              private router: Router) {
-  }
+              private router: Router) {}
 
 
   createGame() {
@@ -53,12 +53,14 @@ export class HomePage {
         console.log('Element was droppped 2', event);
         this.dropOverActive2 = false;
         this.dropOverActive3 = false;
+        this.message = '2 Points';
   }
 
   onDrop3(event){
       console.log('Element was droppped 3', event);
       this.dropOverActive2 = false;
       this.dropOverActive3 = false;
+      this.message = '3 Points';
   }
 
   dragStart(event){
