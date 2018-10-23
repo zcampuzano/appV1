@@ -2,33 +2,38 @@
   <ion-toolbar>
     <ion-menu-button color="dark" slot="start"></ion-menu-button>
     <ion-title>
-      Court
+      Game
     </ion-title>
-    <ion-button (click)="createGame()" slot="end">+ Game</ion-button>
+    <ion-button *ngIf="!currentGame" float-right fill="clear" color="dark" (click)="createGame()"><ion-icon name="add"></ion-icon></ion-button>
+    <ion-button *ngIf="currentGame" float-right fill="clear" color="dark" (click)="saveGame()"><ion-icon name="save"></ion-icon></ion-button>
   </ion-toolbar>
-
 </ion-header>
 
+<button class="button" (click)="confirmScore()">
+  <div class="drop1" [class.dropOverActive2]="dropOverActive2" mwlDroppable
+       (dragEnter)="dropOverActive2 = true; dropOverActive3 = false"
+       (dragLeave)="dropOverActive2 = false; dropOverActive3 = true" (drop)="onDrop2($event)"></div>
+  <div class="drop2" [class.dropOverActive2]="dropOverActive2" mwlDroppable
+       (dragEnter)="dropOverActive2 = true; dropOverActive3 = false"
+       (dragLeave)="dropOverActive2 = false; dropOverActive3 = true" (drop)="onDrop2($event)"></div>
+  <div class="drop3" [class.dropOverActive3]="dropOverActive3" mwlDroppable
+       (dragEnter)="dropOverActive3 = true; dropOverActive2 = false"
+       (dragLeave)="dropOverActive3 = false; dropOverActive2 = true" (drop)="onDrop3($event)"></div>
+</button>
 
-<div class="drop1" [class.dropOverActive2]="dropOverActive2" mwlDroppable
-     (dragEnter)="dropOverActive2 = true; dropOverActive3 = false"
-     (dragLeave)="dropOverActive2 = false; dropOverActive3 = true" (drop)="onDrop2($event)"></div>
-<div class="drop2" [class.dropOverActive2]="dropOverActive2" mwlDroppable
-     (dragEnter)="dropOverActive2 = true; dropOverActive3 = false"
-     (dragLeave)="dropOverActive2 = false; dropOverActive3 = true" (drop)="onDrop2($event)"></div>
-<div class="drop3" [class.dropOverActive3]="dropOverActive3" mwlDroppable
-     (dragEnter)="dropOverActive3 = true"
-     (dragLeave)="dropOverActive3 = false" (drop)="onDrop3($event)"></div>
+<div *ngIf="activeRoster.length === 5">
+  <div *ngFor="let player of activeRoster; let i = index">
+    <app-athlete-fab [id]="player" [drop]="drop" class="athlete{{i}}"></app-athlete-fab>
+  </div>
+</div>
 
 
-<app-athlete-fab [id]="message" class="athlete1"></app-athlete-fab>
-<!--
-<app-athlete-fab class="athlete2"></app-athlete-fab>
-<app-athlete-fab class="athlete3"></app-athlete-fab>
-<app-athlete-fab class="athlete4"></app-athlete-fab>
-<app-athlete-fab class="athlete5"></app-athlete-fab>
--->
+<ion-button (click)="presentAlert()">Active</ion-button>
 
 <ion-item>
-    {{ message }}
+ Team Score: {{ teamPoints }}
+</ion-item>
+
+<ion-item>
+  {{ message }}
 </ion-item>

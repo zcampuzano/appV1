@@ -6,6 +6,7 @@ mongoose.Promise = global.Promise; // Configure Mongoose Promises
 const Schema = mongoose.Schema; // Import Schema from Mongoose
 
 //todo change required to true
+//todo make sure PTM3 works
 
 const gameStatSchema = new Schema({
     game: { type: mongoose.Schema.Types.ObjectId, ref: 'Game' },
@@ -14,6 +15,7 @@ const gameStatSchema = new Schema({
         PTA2 : { type: Number, required : false },
         PTM2: { type  : Number, required : false },
         PTA3 : { type  : Number, required : false },
+        PTM3 : { type  : Number, required : false },
         AST : { type  : Number, required : false },
         BLK : { type  : Number, required : false },
         DRB : { type  : Number, required : false },

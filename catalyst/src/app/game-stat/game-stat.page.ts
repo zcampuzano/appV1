@@ -64,7 +64,7 @@ export class GameStatPage implements OnInit {
   }
 
   getGameStat() {
-      this.sportService.getGameStat(this.id).subscribe(data => {
+      this.sportService.getGameStat(this.id, this.stat).subscribe(data => {
           console.log(data);
           if (!data['success']) {
               this.messageClass = 'alert alert-danger'; // Set an error class

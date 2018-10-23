@@ -1,23 +1,23 @@
-.athlete1 {
-  margin-top: 10vh;
+.athlete0 {
+  //top: 20vh;
   margin-left: 3vw;
-  z-index:2;
+  z-index: 2;
 }
-.athlete2 {
+.athlete1 {
   //top: 15vh;
   margin-left: 23vw;
   z-index:2;
 }
-.athlete3 {
+.athlete2 {
   margin-left: 43vw;
   z-index:2;
 }
-.athlete4 {
+.athlete3 {
   // top: -57.5vh;
   margin-left: 63vw;
   z-index:2;
 }
-.athlete5 {
+.athlete4 {
   // top: -57.5vh;
   margin-left: 83vw;
   z-index:2; }
@@ -28,7 +28,7 @@
   margin-left: 6vw;
   margin-right: 6vw;
   background-color: darkslategray;
-  bottom: 1vh;
+  bottom: 80vh;
   z-index: 1;
 }
 .drop2 {
@@ -36,7 +36,7 @@
   width: 88vw;
   margin-left: 6vw;
   margin-right: 6vw;
-  bottom: 2vh;
+  bottom: 58vh;
   border-bottom-right-radius: 100vw;
   border-bottom-left-radius: 100vw;
   background-color: darkslategray;
@@ -44,9 +44,14 @@
 }
 .drop3 {
   height: 44vh;
-  bottom: 34vh;
+  width: 100vw;
+  bottom: 45vh;
   background-color: lightslategray;
   z-index: 0;
+}
+.button {
+  margin: 0;
+  padding: 0;
 }
 
 [mwlDraggable] {
@@ -56,7 +61,7 @@
 }
 [mwlDroppable] {
   //background-color: green;
-  position: relative;
+  position: fixed;
   //border-radius: 50%;
   //height: 50vh;
   //bottom: -40vh;

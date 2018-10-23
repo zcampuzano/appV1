@@ -119,6 +119,7 @@ export class GamePage implements OnInit {
         toast.present();
     }
 
+    //todo require atleast 5 players
   onGameSubmit() {
       this.disableForm(); // Disable the form
       // FORM CHECKS
@@ -184,6 +185,7 @@ export class GamePage implements OnInit {
                           seasonID: seasonID,
                           gameID: data['gameID'],
                       };
+                      window.localStorage.setItem('currentGame', data['gameID']);
                       this.sportService.updateSeasonGames(seasonUpdate).subscribe(data => {
                           if (data['success']) {
                               this.message = data['message'];
@@ -201,6 +203,7 @@ export class GamePage implements OnInit {
                                   seasonID: seasonID,
                                   gameID: data['gameID'],
                               };
+                              window.localStorage.setItem('currentGame', data['gameID']);
                               this.sportService.updateSeasonGames(seasonUpdate).subscribe(data => {
                                   if (data['success']) {
                                       this.message = data['message'];

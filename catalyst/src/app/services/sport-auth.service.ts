@@ -11,7 +11,7 @@ export class SportAuthService {
   loginAuthToken;
   httpOptions;
 
-  constructor(private http : HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   // Function to create headers, add token, to be used in HTTP requests
   createAuthenticationHeaders() {
@@ -54,16 +54,28 @@ export class SportAuthService {
       return this.http.post(this.domain + '/sportAuthentication/checkForGame', game, this.httpOptions);
   }
 
+  //Function to get current game
+  getCurrentGame() {
+      this.createAuthenticationHeaders();
+      return this.http.get(this.domain + '/sportAuthentication/getCurrentGame', this.httpOptions);
+  }
+
   // Function to create game stat
   createGameStat(gameStat) {
       this.createAuthenticationHeaders();
       return this.http.post(this.domain + '/sportAuthentication/createGameStat', gameStat, this.httpOptions);
   }
 
-  // Function to get gameStat
-  getGameStat(id) {
+  // Function to update game stat with tracked info
+  updateGameStat(gameStat) {
       this.createAuthenticationHeaders();
-      return this.http.get(this.domain + '/sportAuthentication/getGameStat/' + id, this.httpOptions);
+      return this.http.post(this.domain + '/sportAuthentication/updateGameStat', gameStat, this.httpOptions);
+  }
+
+  // Function to get gameStat
+  getGameStat(id, stat) {
+      this.createAuthenticationHeaders();
+      return this.http.get(this.domain + '/sportAuthentication/getGameStat/' + id + '/' + stat, this.httpOptions);
   }
 
   // Function to create basketball average stat schema

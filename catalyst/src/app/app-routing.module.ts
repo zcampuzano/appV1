@@ -14,11 +14,11 @@ const routes: Routes = [
   { path: 'games', loadChildren: './games/games.module#GamesPageModule', canActivate: [AuthGuard] },
   { path: 'games/:id', loadChildren: './single-game/single-game.module#SingleGamePageModule', canActivate: [AuthGuard] },
   { path: 'game/:id/:stat', loadChildren: './game-stat/game-stat.module#GameStatPageModule', canActivate: [AuthGuard] },
-  { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
+  { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule', canActivate: [AuthGuard] },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes,{onSameUrlNavigation: 'reload'})],
   providers: [
      AuthGuard,
      NotAuthGuard

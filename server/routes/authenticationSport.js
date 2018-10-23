@@ -238,7 +238,7 @@ module.exports = (router, session) => {
             game: req.body.game,
             athlete : req.body.athlete,
             stat: {
-                PTA2 : 0, PTM2 : 0, PTA3 : 0, AST : 0, BLK : 0, DRB : 0,
+                PTA2 : 0, PTM2 : 0, PTA3 : 0, PTM3 : 0, AST : 0, BLK : 0, DRB : 0,
                 FTA : 0, FTM : 0, ORB : 0, PF : 0, STL : 0, TO : 0
             },
         });
@@ -262,6 +262,44 @@ module.exports = (router, session) => {
         });
 
     });
+
+
+    /* ==============
+    Update gameStat
+     ============== */
+    router.post('/updateGameStat', (req, res) => {
+        if (!req.body.game) {
+            res.json({ success: false, message: 'no game set'});
+        } else if (!req.body.athlete) {
+            res.json({ success: false, message: 'no athlete provided'});
+        } else if (!req.body.stat) {
+            res.json({ success: false, message: 'no stats provided'});
+        }
+
+        GameStat.findOneAndUpdate(
+            { "game": req.body.game, "athlete": req.body.athlete },
+            {
+                "$set": {
+                    stat: req.body.stat
+                }
+            },
+            {"new": true, "upsert": false},
+            function (err, doc) {
+                if (err) {
+                    res.json({ success: false, message: 'Could not add stats to game' }); // Return error
+                    throw err;
+                } else if (doc === null) {
+                    res.json({ success: false, message: 'GameStat doesnt exist' }); // Return error
+                } else {
+                    res.json({ success: true, message: 'Game Saved', game: doc, gameStatID: doc._id });
+                }
+            }
+        );
+
+    })
+
+
+
 
     /* ==============
         Create Athlete Route
@@ -410,8 +448,8 @@ module.exports = (router, session) => {
        })
     });
 
-    router.get('/getGameStat/:id', (req, res) => {
-       GameStat.findOne({ game: req.params.id }).exec((err, gameStat) => {
+    router.get('/getGameStat/:id/:stat', (req, res) => {
+       GameStat.findOne({ game: req.params.id, athlete: req.params.stat }).exec((err, gameStat) => {
            if (err) {
                res.json({ success: false, message: err });
            } else {
@@ -438,6 +476,37 @@ module.exports = (router, session) => {
                     res.json({ success: false, message: 'We do not have any users' }); // Return error, organs was not found in db
                 } else {
                     res.json({ success : true, user : user})
+                }
+            }
+        })
+    });
+
+    /* ===============================================================
+      Route to get organization/game
+    =============================================================== */
+    router.get('/getCurrentGame', (req, res) => {
+        Organization.findOne({ _id: req.decoded.organId }).select('seasons').exec((err, seasons) => {
+            if (err) {
+                res.json({ success: false, message: err });
+            } else {
+                if (!seasons) {
+                    res.json({ success: false, message: 'No seasons' });
+                } else {
+                    const lastSeason = seasons.seasons.length - 1;
+                    const seasonID = seasons.seasons[lastSeason];
+                    Season.findOne({ _id: seasonID }).select('games').exec((err, games) => {
+                        if (err) {
+                            res.json({ success: false, message: err });
+                        } else {
+                            if (!games) {
+                                res.json({ success: false, message: 'No games' });
+                            } else {
+                                const currentGame = games.games.length - 1;
+                                const gameID = games.games[currentGame];
+                                res.json({ success: true, game: gameID, organization: req.decoded.organId });
+                            }
+                        }
+                    })
                 }
             }
         })
