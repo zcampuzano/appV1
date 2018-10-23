@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RegisterAuthService } from "../services/register-auth.service";
 import * as $ from 'jquery';
 import {FormGroup} from "@angular/forms";
+import {ToastController} from "@ionic/angular";
 
 @Component({
   selector: 'app-profile',
@@ -21,13 +22,25 @@ export class ProfilePage implements OnInit {
   editPassword = false;
   editEmail = false;
 
-  constructor(private authService: RegisterAuthService) { }
+  constructor(private authService: RegisterAuthService,
+              private toastCtrl: ToastController) { }
 
   ngOnInit() {
     this.getProfile();
   }
 
-  getProfile() {
+    // Toast message
+    async presentToast() {
+        const toast = await this.toastCtrl.create({
+            message: this.message,
+            duration: 2000,
+            position: 'top'
+        });
+        toast.present();
+    }
+
+
+    getProfile() {
     this.authService.getProfile().subscribe(data => {
       if (data['success']) {
         this.id = data['user']._id;
@@ -54,9 +67,6 @@ export class ProfilePage implements OnInit {
     })
   }
 
-  //todo change email
-  //todo change password
-
   changeUsername() {
     const newUsername = $( "#inputUserName" ).val();
     let validUsername = this.validateUsername(newUsername);
@@ -67,22 +77,86 @@ export class ProfilePage implements OnInit {
         };
 
         this.authService.changeUsername(user).subscribe(data => {
-            console.log(data);
             if (data['success']) {
-                this.username = data['username'];
-                console.log(this.username);
+                this.username = newUsername;
+                this.message = data['message'];
+                this.presentToast();
+                return;
             } else {
-                console.log(data['message']);
+                this.message = data['message'];
+                this.presentToast();
+                return;
             }
         });
     } else {
-      this.message = 'Invalid Username';
-      console.log(this.message);
+        this.message = 'Invalid Username';
+        this.presentToast();
     }
-
   }
 
-  // Function to validate e-mail is proper format
+  changeEmail() {
+        const newEmail = $( "#inputEmail" ).val();
+        let validEmail = this.validateEmail(newEmail);
+        if (validEmail) {
+            const user = {
+                newEmail : newEmail,
+                identity: this.id,
+            };
+            this.authService.changeEmail(user).subscribe(data => {
+                if (data['success']) {
+                    this.email = data['email'];
+                    this.message = data['message'];
+                    this.presentToast();
+                    return;
+                } else {
+                    this.message = data['message'];
+                    this.presentToast();
+                    return;
+                }
+            });
+        } else {
+            this.message = 'Invalid Email';
+            this.presentToast();
+        }
+    }
+
+  changePassword() {
+        const newPassword = $( "#inputPassword" ).val();
+        const oldPassword = $( "#oldPassword" ).val();
+        let validPassword = this.validatePassword(newPassword);
+        if (validPassword) {
+            const user = {
+                newPassword : newPassword,
+                identity: this.id,
+            };
+            this.authService.checkPassword(oldPassword, this.username).subscribe(data => {
+                if (data['success']) {
+                    this.message = data['message'];
+                    this.presentToast();
+                    this.authService.changePassword(user).subscribe(data => {
+                        if (data['success']) {
+                            this.message = data['message'];
+                            this.presentToast();
+                            return;
+                        } else {
+                            this.message = data['message'];
+                            this.presentToast();
+                            return;
+                        }
+                    });
+                } else {
+                    this.message = data['message'];
+                    this.presentToast();
+                    return;
+                }
+            });
+        } else {
+            this.message = 'Invalid New Password';
+            this.presentToast();
+        }
+    }
+
+    // Function to validate e-mail is proper format
   validateEmail(controls) {
         // Create a regular expression
         const regExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
@@ -106,8 +180,8 @@ export class ProfilePage implements OnInit {
         }
   }
 
-  // Function to validate password
-  validatePassword(controls) {
+    // Function to validate password
+    validatePassword(controls) {
         // Create a regular expression
         const regExp = new RegExp(/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?=.*?[\W]).{7,35}$/);
         // Test password against regular expression
@@ -116,18 +190,5 @@ export class ProfilePage implements OnInit {
         } else {
             return { 'validatePassword': true }; // Return as invalid password
         }
-  }
-
-  // Funciton to ensure passwords match
-  matchingPasswords(password, confirm) {
-        return (group: FormGroup) => {
-            // Check if both fields are the same
-            if (group.controls[password].value === group.controls[confirm].value) {
-                return null; // Return as a match
-            } else {
-                return { 'matchingPasswords': true }; // Return as error: do not match
-            }
-        };
-  }
-
+    }
 }

@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const passport = require('passport');
 const config = require('../config/database');
+const bcrypt = require('bcrypt-nodejs'); // A native JS bcrypt library for NodeJS
 
 
 module.exports = (router, session) => {
@@ -153,7 +154,7 @@ module.exports = (router, session) => {
                                 }
                             }
                         } else {
-                            res.json({success: true, message: 'Account registered!', username: user.username, password: user.password}); // Return success
+                            res.json({success: true, message: 'Account registered!'}); // Return success
                         }
                     });
                 }
@@ -301,7 +302,7 @@ module.exports = (router, session) => {
     });
 
     /* ===============================================================
-    Route to get all organization
+    Route to change username
     =============================================================== */
     router.post('/changeUsername', (req, res) => {
         if (!req.body.identity) {
@@ -314,20 +315,20 @@ module.exports = (router, session) => {
                     "username": req.body.newUsername,
                 }
             },
-            {"new": true, "upsert": true},
+            {"upsert": false},
             function (err, doc) {
                 if (err) {
-                    res.json({success: false, message: 'Could not change username'}); // Return error, organs was not found in db
-                    throw err;
+                    res.json({success: false, message: 'Could not change username. It already exists'});
+                } else {
+                    // console.log(doc);
+                    res.json({success: true, username: doc.username, message: 'Username Changed'});
                 }
-                console.log(doc);
-                res.json({success: true, username: doc.username});
             }
         );
     });
 
     /* ===============================================================
-    Route to get all organization
+    Route to change email
     =============================================================== */
     router.post('/changeEmail', (req, res) => {
         if (!req.body.identity) {
@@ -343,14 +344,71 @@ module.exports = (router, session) => {
             {"new": true, "upsert": true},
             function (err, doc) {
                 if (err) {
-                    res.json({success: false, message: 'Could not change email'}); // Return error, organs was not found in db
-                    throw err;
+                    res.json({success: false, message: 'Could not change email. It already exists'}); // Return error, organs was not found in db
+                } else {
+                    // console.log(doc);
+                    res.json({success: true, email: doc.email, message: 'E-mail Changed'});
                 }
-                console.log(doc);
-                res.json({success: true, email: doc.email});
             }
         );
     });
+
+    /* ===============================================================
+       Route to check if old password matches before changing password to a new one
+    =============================================================== */
+    router.get('/checkPassword/:oldPassword/:username', (req, res) => {
+        // Check if password was provided in paramaters
+        if (!req.params.oldPassword) {
+            res.json({success: false, message: 'Password was not provided'}); // Return error
+        } else {
+            // Look for password in database
+            User.findOne({username: req.params.username}, (err, user) => {
+                // Check if connection error was found
+                if (err) {
+                    res.json({success: false, message: 'err : user not found?'}); // Return connection error
+                } else {
+                    const validPass = user.comparePassword(req.params.oldPassword);
+                    // Check if user's password was found
+                    if (validPass) { //user &&
+                        res.json({success: true, message: 'Old Password Matched'}); // Return as taken username
+                    } else {
+                        res.json({success: false, message: 'Old Password didn\'t match'}); // Return as vailable username
+                    }
+                }
+            });
+        }
+    });
+
+    /* ===============================================================
+    Route to change password
+    =============================================================== */
+    router.post('/changePassword', (req, res) => {
+        if (!req.body.identity) {
+            console.log("no ID");
+        }
+        // Apply encryption
+        bcrypt.hash(req.body.newPassword, null, null, (err, hash) => {
+            if (err) return next(err); // Ensure no errors
+            User.findOneAndUpdate(
+                {"_id": req.body.identity},
+                {
+                    "$set": {
+                        "password": hash,
+                    }
+                },
+                {"new": true, "upsert": true},
+                function (err, doc) {
+                    if (err) {
+                        res.json({success: false, message: 'Could not change password. It already exists'}); // Return error, organs was not found in db
+                    } else {
+                        // console.log(doc);
+                        res.json({success: true, message: 'Password Changed'});
+                    }
+                }
+            );
+        });
+    });
+
 
     /* ================================================
     MIDDLEWARE - Used to grab user's token from headers

@@ -101,10 +101,27 @@ export class RegisterAuthService {
         return this.http.get(this.domain + '/authentication/profile', this.httpOptions);
     }
 
-    // change userna
+    // change username
     changeUsername(user) {
-        //this.createAuthenticationHeaders(); // Create headers before sending to API
+        this.createAuthenticationHeaders(); // Create headers before sending to API
         return this.http.post(this.domain + '/authentication/changeUsername', user);
+    }
+
+    //change email
+    changeEmail(user) {
+        this.createAuthenticationHeaders(); // Create headers before sending to API
+        return this.http.post(this.domain + '/authentication/changeEmail', user);
+    }
+
+    // Function to check if password is taken
+    checkPassword(oldPassword, username) {
+        this.createAuthenticationHeaders(); // Create headers before sending to API
+        return this.http.get(this.domain + '/authentication/checkPassword/' + oldPassword + '/' + username, this.httpOptions);
+    }
+    //change password
+    changePassword(user) {
+        this.createAuthenticationHeaders(); // Create headers before sending to API
+        return this.http.post(this.domain + '/authentication/changePassword', user);
     }
 
     // Function to check if user is logged in

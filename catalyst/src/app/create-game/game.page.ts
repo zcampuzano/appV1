@@ -40,7 +40,7 @@ export class GamePage implements OnInit {
   createForm() {
       this.form = this.formBuilder.group({
           // Date input
-          date: [''],
+          date: [' '],
           // Away team
           away: [''],
           // home team
