@@ -9,6 +9,7 @@ const basketballSchema = new Schema({
     PTA2 : { type  : Number, required : false },
     PTM2: { type  : Number, required : false },
     PTA3 : { type  : Number, required : false },
+    PTM3 : { type : Number, required : false },
     AST : { type  : Number, required : false },
     BLK : { type  : Number, required : false },
     DRB : { type  : Number, required : false },

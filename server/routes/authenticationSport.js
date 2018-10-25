@@ -38,7 +38,7 @@ module.exports = (router, session) => {
        ============== */
     router.post('/createBasketballSchema', (req, res) => {
         let basketballSchema = new BasketballSchema({
-            PTA2 : 0, PTM2: 0, PTA3 : 0, AST : 0, BLK : 0, DRB : 0, FTA : 0, FTM : 0, ORB : 0, PF : 0,
+            PTA2 : 0, PTM2: 0, PTA3 : 0, PTM3 : 0, AST : 0, BLK : 0, DRB : 0, FTA : 0, FTM : 0, ORB : 0, PF : 0,
             STL : 0, TO : 0, ASTPG : 0, STLPG : 0, PTP2 : 0, PTP3 : 0, AST_TO_RATIO : 0, BLKPG : 0, FGP : 0,
             FGA : 0, FGM : 0, FTP : 0, GP : 0, MINPG : 0, OPP : 0, OPPG : 0, PFPG : 0, PPG : 0, RPG : 0,
             TOPG : 0, MIN : 0, PTS : 0, TRB : 0, FF : 0, TECHF : 0, DQ : 0, GS : 0, TF : 0, W : 0, L : 0, T : 0
@@ -648,13 +648,19 @@ module.exports = (router, session) => {
                                 console.log(seasons.seasons);
                                 const lastSeason = seasons.seasons.length - 1;
                                 const seasonID = seasons.seasons[lastSeason];
-                                Season.findOne({_id: seasonID}).select('year').exec((err, seasonYear) => {
-                                    console.log(seasonYear);
+                                Season.findOne({_id: seasonID}).select('basketballStat year').exec((err, season) => {
+                                    console.log(season);
                                     if (err) {
                                         res.json({success: false, message: err});
                                     } else {
-                                        if (seasonYear.year === 2018) {
-                                            res.json({success: true, message: 'Season already exists', season: true});
+                                        //todo remove hardcoding
+                                        if (season.year === 2018) {
+                                            res.json({
+                                                success: true,
+                                                message: 'Season already exists',
+                                                organization: organID.organization,
+                                                season: true, stat: season.basketballStat
+                                            });
                                         } else {
                                             res.json({success: true, message: 'Season does not exist yet', season: false});
                                         }
@@ -713,6 +719,7 @@ module.exports = (router, session) => {
                     PTA2 : req.body.PTA2,
                     PTM2 : req.body.PTM2,
                     PTA3 : req.body.PTA3,
+                    PTM3 : req.body.PTM3,
                     AST : req.body.AST,
                     BLK : req.body.BLK,
                     DRB : req.body.DRB,

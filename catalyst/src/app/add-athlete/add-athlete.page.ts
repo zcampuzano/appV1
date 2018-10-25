@@ -16,6 +16,8 @@ export class AddAthletePage implements OnInit {
   formVisible = false;
   private processing: boolean;
   positions = ['PG', 'SG', 'PF', 'SF', 'C'];
+  seasonStatID;
+  organization;
 
 
   constructor(
@@ -58,6 +60,9 @@ export class AddAthletePage implements OnInit {
     this.sportService.checkForSeason().subscribe(data => {
         if (data['success'] && !data['season']) {
             this.createSeason();
+        } else if (data['success'] && data['season']) {
+            this.seasonStatID = data['stat'];
+            this.organization = data['organization'];
         }
     })
   }
@@ -200,6 +205,10 @@ export class AddAthletePage implements OnInit {
 
   onAthleteClick(_id, firstname, lastname) {
       this.router.navigate(['/athletes' + '/' + firstname + lastname + '/' + _id]);
+  }
+
+  onOrganizationClick() {
+      this.router.navigate(['/game' + '/' + this.organization + '/' + this.seasonStatID])
   }
 
   // Function to disable the registration form
