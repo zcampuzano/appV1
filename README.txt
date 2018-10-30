@@ -7,6 +7,7 @@ Install NodeJS
 In catalyst directory, run "npm i"
 In server directory, run "npm i"
 
+In a separate terminal, run "mongod" to start mongodb service
 In a separate terminal, run "mongo catalyst" to start database
 In server directory, run "node serverApp.js" to start server
 In catalyst directory, run "ionic serve -c" to start app
