@@ -31,8 +31,8 @@
       <ion-label>
         New Email:
       </ion-label>
-      <ion-input></ion-input>
-      <ion-button slot="end">Save</ion-button>
+      <ion-input id="inputEmail" type="text" name="email"></ion-input>
+      <ion-button slot="end" (click)="changeEmail()">Save</ion-button>
     </ion-item>
     <ion-item>
       <p>Password: ******** </p>
@@ -42,7 +42,7 @@
       <ion-label>
         Old Password:
       </ion-label>
-      <ion-input></ion-input>
+      <ion-input id="oldPassword"></ion-input>
     </ion-item>
     <ion-item *ngIf="editPassword">
       <ion-label>
@@ -54,8 +54,8 @@
       <ion-label>
         Confirm Password:
       </ion-label>
-      <ion-input></ion-input>
-      <ion-button slot="end">Save</ion-button>
+      <ion-input  id="inputPassword" type="text" name="password"></ion-input>
+      <ion-button slot="end" (click)="changePassword()">Save</ion-button>
     </ion-item>
     <ion-item>
       <p>Organization: {{ organizationname }}</p>
