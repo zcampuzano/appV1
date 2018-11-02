@@ -45,6 +45,10 @@ export class AthleteFabComponent implements OnChanges {
           this.dropConfirm = false;
       }
 
+      if (changes.id) {
+          this.getAthlete();
+      }
+
   }
 
   getAthlete() {

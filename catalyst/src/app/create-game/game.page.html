@@ -9,7 +9,7 @@
     <!-- First Name Input -->
     <ion-item [ngClass]="{'has-error': form.controls['date'].errors && form.controls['date'].dirty, 'has-success': form.controls['date'].errors}">
       <ion-label>Date</ion-label>
-      <ion-datetime class="form-control" formControlName="date" displayFormat="MM/DD/YYYY"></ion-datetime>
+      <ion-datetime class="form-control" formControlName="date" displayFormat="MM/DD/YYYY" [(ngModel)]="dateDefault"></ion-datetime>
     </ion-item>
 
     <ion-item no-lines>

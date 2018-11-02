@@ -1,10 +1,10 @@
-import {Component, OnChanges} from '@angular/core';
+import {Component, OnChanges, SimpleChanges} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {RegisterAuthService} from "../services/register-auth.service";
 import {SportAuthService} from "../services/sport-auth.service";
 import {Router} from "@angular/router";
 // import {FormBuilder, FormGroup, FormControl, Validators} from "@angular/forms";
-import { AlertController, ToastController } from "@ionic/angular";
+import { AlertController, ToastController, LoadingController } from "@ionic/angular";
 
 
 @Component({
@@ -56,7 +56,8 @@ export class HomePage implements OnChanges {
               private sportService: SportAuthService,
               private router: Router,
               private alertCtrl: AlertController,
-              private toastCtrl: ToastController) {}
+              private toastCtrl: ToastController,
+              private loadCtrl: LoadingController) {}
 
 
   ngOnInit() {
@@ -64,12 +65,11 @@ export class HomePage implements OnChanges {
       this.getAthletes();
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
       this.setActiveGame();
       this.getAthletes();
   }
 
-  //todo save game data to organization basketball stat
   getAthletes() {
       if (window.localStorage.getItem('currentGame')) {
           this.currentGame = true;
@@ -100,6 +100,32 @@ export class HomePage implements OnChanges {
 
   }
 
+  async presentLoading() {
+      if (!window.localStorage.getItem('currentGame')) {
+          this.message = 'Start a game';
+          this.presentToast();
+      } else if (this.activeRoster.length > 0) {
+          this.presentAlert();
+      } else {
+          const loading = await this.loadCtrl.create({
+              message: ''
+          });
+
+          await loading.present().then(() => {
+              this.getAthletes();
+              const interval = setInterval(() => {
+                  if (this.roster.length > 0) {
+                      this.presentAlert();
+                      loading.dismiss();
+                      clearInterval(interval);
+                  }
+              }, 500);
+
+          });
+      }
+
+  }
+
   async presentToast() {
     const toast = await this.toastCtrl.create({
         message: this.message,
@@ -109,57 +135,51 @@ export class HomePage implements OnChanges {
   }
 
   async presentAlert() {
-    this.getAthletes();
-    if (!window.localStorage.getItem('currentGame')) {
-        this.message = 'Start a game';
-        this.presentToast();
-    } else {
-        let inputs = [];
-        for (let i = 0; i < this.roster.length; i++) {
-            if (this.roster[i].organization === this.organization) {
-                inputs = inputs.concat([{
-                    name: `athlete${i}`,
-                    type: 'checkbox',
-                    label: `${this.roster[i].lastname} (${this.roster[i].number})`,
-                    value: this.roster[i]._id,
-                    checked: this.activeRoster.includes(this.roster[i]._id)
-                }])
-            }
-        }
+      let inputs = [];
+      for (let i = 0; i < this.roster.length; i++) {
+          if (this.roster[i].organization === this.organization) {
+              inputs = inputs.concat([{
+                  name: `athlete${i}`,
+                  type: 'checkbox',
+                  label: `${this.roster[i].lastname} (${this.roster[i].number})`,
+                  value: this.roster[i]._id,
+                  checked: this.activeRoster.includes(this.roster[i]._id)
+              }])
+          }
+      }
 
-        const alert = await this.alertCtrl.create({
-            header: 'Active Players',
-            inputs: inputs,
-            buttons: [
-                {
-                    text: 'Cancel',
-                    role: 'cancel',
-                    cssClass: 'secondary',
-                    handler: () => {
-                        console.log('Confirm Cancel');
-                    }
-                }, {
-                    text: 'Ok',
-                    handler: data => {
-                        console.log('Confirm Ok');
-                        if (data.length !== 5) {
-                            this.message = 'Must select 5 players';
-                            this.presentToast();
-                            this.presentAlert();
-                        } else {
-                            this.activeRoster = data;
-                            window.localStorage.setItem('active', JSON.stringify(this.activeRoster));
-                            console.log(this.activeRoster);
-                        }
-                    }
-                }
-            ]
-        });
+      const alert = await this.alertCtrl.create({
+          header: 'Active Players',
+          inputs: inputs,
+          buttons: [
+              {
+                  text: 'Cancel',
+                  role: 'cancel',
+                  cssClass: 'secondary',
+                  handler: () => {
+                      console.log('Confirm Cancel');
+                  }
+              }, {
+                  text: 'Ok',
+                  handler: data => {
+                      console.log('Confirm Ok');
+                      if (data.length !== 5) {
+                          this.message = 'Must select 5 players';
+                          this.presentToast();
+                          this.presentAlert();
+                      } else {
+                          this.activeRoster = data;
+                          window.localStorage.setItem('active', JSON.stringify(this.activeRoster));
+                          console.log(this.activeRoster);
+                      }
+                  }
+              }
+          ]
+      });
 
-
-        await alert.present();
-    }
+      await alert.present();
   }
+
 
   setActiveGame() {
       let storedRoster = JSON.parse(window.localStorage.getItem('active'));
@@ -220,7 +240,32 @@ export class HomePage implements OnChanges {
       this.confirm = true;
   }
 
-  //todo error handling and success notification
+  async saveConfirm() {
+      const alert = await this.alertCtrl.create({
+          header: 'Save Game',
+          buttons: [
+              {
+                  text: 'Cancel',
+                  role: 'cancel',
+                  cssClass: 'secondary',
+                  handler: () => {
+                      console.log('Confirm Cancel');
+                  }
+              }, {
+                  text: 'Save',
+                  role: 'save',
+                  cssClass: 'primary',
+                  handler: () => {
+                      console.log('Confirm Save');
+                      this.saveGame();
+                  }
+              }
+          ]
+      });
+
+      await alert.present();
+  }
+
   saveGame() {
       for (let i = 0; i < this.roster.length; i++) {
           let storedStat = JSON.parse(window.localStorage.getItem(this.roster[i]._id));
@@ -257,6 +302,8 @@ export class HomePage implements OnChanges {
       this.roster = [];
       this.activeRoster = [];
       this.currentGame = false;
+      this.message = 'Game Saved!';
+      this.presentToast();
   }
 
   addToTeam(stat) {
@@ -310,7 +357,7 @@ export class HomePage implements OnChanges {
 
                       this.teamOverallStat.GP += 1;
                       this.teamOverallStat.PTS += (this.teamGameStat.PTM2 * 2) + (this.teamGameStat.PTM3 * 3) + this.teamGameStat.FTM;
-                      this.teamOverallStat.PPG += this.teamOverallStat.PTS/this.teamOverallStat.GP;
+                      this.teamOverallStat.PPG = this.teamOverallStat.PTS/this.teamOverallStat.GP;
                       this.teamOverallStat.PTP2 = this.teamOverallStat.PTM2/this.teamOverallStat.PTA2;
                       this.teamOverallStat.PTP3 = this.teamOverallStat.PTM3/this.teamOverallStat.PTA3;
                       this.teamOverallStat.AST_TO_RATIO = (this.teamGameStat.TO !== 0 ? this.teamOverallStat.AST/this.teamOverallStat.TO : this.teamOverallStat.AST);
@@ -346,9 +393,8 @@ export class HomePage implements OnChanges {
                                   PFPG : null, PPG : null, RPG : null, TOPG : null, MIN : null, PTS : 0, TRB : 0, FF : null,
                                   TECHF : null, DQ : null, GS : null, TF : null, W : null, L : null, T : null
                               };
-                              return 0;
                           } else {
-                              return -1;
+                              console.log('could not save overall stat');
                           }
                       })
 
@@ -414,7 +460,6 @@ export class HomePage implements OnChanges {
           }
       })
   }
-
 
 }
 

@@ -107,7 +107,7 @@ let validPassword = (password) => {
         return false; // Return error
     } else {
         // Regular Expression to test if password is valid format
-        const regExp = new RegExp(/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?=.*?[\W]).{8,35}$/);
+        const regExp = new RegExp(/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?=.*?[\W]).{7,35}$/);
         return regExp.test(password); // Return regular expression test result (true or false)
     }
 };
@@ -117,7 +117,7 @@ const passwordValidators = [
     // First password validator
     {
         validator: passwordLengthChecker,
-        message: 'Password must be at least 8 characters but no more than 35'
+        message: 'Password must be at least 7 characters but no more than 35'
     },
     // Second password validator
     {

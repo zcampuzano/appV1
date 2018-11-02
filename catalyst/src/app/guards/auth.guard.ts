@@ -27,5 +27,6 @@ export class AuthGuard implements CanActivate {
           this.router.navigate(['']); // Return error and route to login page
           return false; // Return false: user not authorized to view page
       }
+
   }
 }

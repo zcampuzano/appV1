@@ -243,7 +243,6 @@ module.exports = (router, session) => {
             },
         });
 
-        //todo change from zeros
 
         GameStat.createGameStat(gameStat, function(err){
             if (err) {

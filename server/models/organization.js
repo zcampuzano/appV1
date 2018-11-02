@@ -6,8 +6,8 @@ mongoose.Promise = global.Promise; // Configure Mongoose Promises
 const Schema = mongoose.Schema; // Import Schema from Mongoose
 
 const organizationSchema = new Schema({
-    organizationname: { type: String, required: true, unique: true, lowercase : true},
-    location: { type: String, required: true, unique: true, lowercase : true},
+    organizationname: { type: String, required: true, unique: true},
+    location: { type: String, required: true, unique: true},
     seasons: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Season' }]
 });
 

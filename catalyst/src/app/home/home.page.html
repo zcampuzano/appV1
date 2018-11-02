@@ -5,7 +5,7 @@
       Game
     </ion-title>
     <ion-button *ngIf="!currentGame" float-right fill="clear" color="dark" (click)="createGame()"><ion-icon name="add"></ion-icon></ion-button>
-    <ion-button *ngIf="currentGame" float-right fill="clear" color="dark" (click)="saveGame()"><ion-icon name="save"></ion-icon></ion-button>
+    <ion-button *ngIf="currentGame" float-right fill="clear" color="dark" (click)="saveConfirm()"><ion-icon name="save"></ion-icon></ion-button>
   </ion-toolbar>
 </ion-header>
 
@@ -28,12 +28,9 @@
 </div>
 
 
-<ion-button (click)="presentAlert()">Active</ion-button>
+<ion-button (click)="presentLoading()">Active</ion-button>
 
 <ion-item>
   Team Score: {{ teamGameStat.PTS }}
 </ion-item>
 
-<ion-item>
-  {{ message }}
-</ion-item>

@@ -11,23 +11,20 @@
     <ion-item [ngClass]="{'has-error': (form.controls['firstname'].errors && form.controls['firstname'].dirty), 'has-success': !form.controls['firstname'].errors}">
       <ion-label>First Name</ion-label>
       <ion-input class="form-control" formControlName="firstname" type="text" autocomplete="off"></ion-input>
-      <!-- Validation -->
-      <ion-list no-lines class="help-block">
-        <ion-item *ngIf="form.controls['firstname'].errors?.required && form.controls['firstname'].dirty">This field is required</ion-item>
-        <ion-item *ngIf="form.controls['firstname'].errors?.validateOrganization && form.controls['firstname'].dirty">First Name must not have any special characters</ion-item>
-      </ion-list>
     </ion-item>
+    <!-- Validation -->
+    <ion-item *ngIf="form.controls['firstname'].errors?.required && form.controls['firstname'].dirty"><small>This field is required</small></ion-item>
+    <ion-item *ngIf="form.controls['firstname'].errors?.validateUsername && form.controls['firstname'].dirty"><small>First Name must not have any special characters</small></ion-item>
+
 
     <!-- Last Name Input -->
     <ion-item [ngClass]="{'has-error': (form.controls['lastname'].errors && form.controls['lastname'].dirty), 'has-success': !form.controls['lastname'].errors}">
       <ion-label>Last Name</ion-label>
       <ion-input type="text" class="form-control" autocomplete="off" formControlName="lastname"></ion-input>
-      <!-- Validation -->
-      <ion-list no-lines class="help-block">
-        <ion-item *ngIf="form.controls['lastname'].errors?.required && form.controls['lastname'].dirty">This field is required</ion-item>
-        <ion-item *ngIf="form.controls['lastname'].errors?.validateOrganization && form.controls['lastname'].dirty">Last Name must not have any special characters</ion-item>
-      </ion-list>
     </ion-item>
+    <!-- Validation -->
+    <ion-item *ngIf="form.controls['lastname'].errors?.required && form.controls['lastname'].dirty"><small>This field is required</small></ion-item>
+    <ion-item *ngIf="form.controls['lastname'].errors?.validateUsername && form.controls['lastname'].dirty"><small>Last Name must not have any special characters</small></ion-item>
 
     <!-- Username Input -->
     <ion-item [ngClass]="{'has-error': (form.controls['username'].errors && form.controls['username'].dirty) || (!usernameValid && form.controls['username'].dirty),
@@ -35,50 +32,43 @@
       <ion-label>Username</ion-label>
       <ion-input type="text" class="form-control" autocomplete="off" formControlName="username" (blur)="checkUsername()"></ion-input>
       <!-- Validation -->
-      <ion-list no-lines class="help-block">
-        <ion-item *ngIf="form.controls['username'].errors?.required && form.controls['username'].dirty">This field is required</ion-item>
-        <ion-item *ngIf="form.controls['username'].errors?.minlength && form.controls['username'].dirty || form.controls['username'].errors?.maxlength && form.controls['username'].dirty ">Minimum characters: 3, Maximum characters: 15</ion-item>
-        <ion-item *ngIf="form.controls['username'].errors?.validateOrganization && form.controls['username'].dirty">Username must not have any special characters</ion-item>
-        <ion-item *ngIf="usernameMessage"> {{ usernameMessage }} </ion-item>
-      </ion-list>
     </ion-item>
+    <ion-item *ngIf="form.controls['username'].errors?.required && form.controls['username'].dirty"><small>This field is required</small></ion-item>
+    <ion-item *ngIf="form.controls['username'].errors?.minlength && form.controls['username'].dirty || form.controls['username'].errors?.maxlength && form.controls['username'].dirty "><small>Minimum characters: 3, Maximum characters: 15</small></ion-item>
+    <ion-item *ngIf="form.controls['username'].errors?.validateOrganization && form.controls['username'].dirty"><small>Username must not have any special characters</small></ion-item>
+    <ion-item *ngIf="usernameMessage"> {{ usernameMessage }} </ion-item>
 
     <!-- Email Input -->
     <ion-item [ngClass]="{'has-error': (form.controls['email'].errors && form.controls['email'].dirty) || (!emailValid && form.controls['email'].dirty)
         , 'has-success': !form.controls['email'].errors && emailValid}">
       <ion-label>Email</ion-label>
       <ion-input type="text" class="form-control" autocomplete="off" formControlName="email" (blur)="checkEmail()"></ion-input>
-      <!-- Validation -->
-      <ion-list no-lines class="help-block">
-        <ion-item *ngIf="form.controls['email'].errors?.required && form.controls['email'].dirty">This field is required</ion-item>
-        <ion-item *ngIf="(form.controls['email'].errors?.minlength && form.controls['email'].dirty || form.controls['email'].errors?.maxlength && form.controls['email'].dirty ) && form.controls['email'].dirty">Minimum characters: 5, Maximum characters: 30</ion-item>
-        <ion-item *ngIf="form.controls['email'].errors?.validateEmail && form.controls['email'].dirty">This must be a valid e-mail</ion-item>
-        <ion-item *ngIf="emailMessage"> {{ emailMessage }} </ion-item>
-      </ion-list>
     </ion-item>
+    <!-- Validation -->
+    <ion-item *ngIf="form.controls['email'].errors?.required && form.controls['email'].dirty"><small>This field is required</small></ion-item>
+    <ion-item *ngIf="(form.controls['email'].errors?.minlength && form.controls['email'].dirty || form.controls['email'].errors?.maxlength && form.controls['email'].dirty ) && form.controls['email'].dirty"><small>Minimum characters: 5, Maximum characters: 30</small></ion-item>
+    <ion-item *ngIf="form.controls['email'].errors?.validateEmail && form.controls['email'].dirty"><small>This must be a valid e-mail</small></ion-item>
+    <ion-item *ngIf="emailMessage"> {{ emailMessage }} </ion-item>
 
     <!-- Password Input -->
     <ion-item [ngClass]="{'has-error': (form.controls['password'].errors && form.controls['password'].dirty), 'has-success': !form.controls['password'].errors}">
       <ion-label>Password</ion-label>
       <ion-input type="password" class="form-control" autocomplete="off" formControlName="password"></ion-input>
-      <!-- Validation -->
-      <ion-list no-lines class="help-block">
-        <ion-item *ngIf="form.controls['password'].errors?.required && form.controls['password'].dirty">This field is required</ion-item>
-        <ion-item *ngIf="form.controls['password'].errors?.minlength && form.controls['password'].dirty || form.controls['password'].errors?.maxlength && form.controls['password'].dirty ">Minimum characters: 7, Maximum characters: 35</ion-item>
-        <ion-item *ngIf="form.controls['password'].errors?.validatePassword && form.controls['password'].dirty">Contain upper and lower case, a special character and a number</ion-item>
-      </ion-list>
     </ion-item>
+    <!-- Validation -->
+    <ion-item *ngIf="form.controls['password'].errors?.required && form.controls['password'].dirty"><small>This field is required</small></ion-item>
+    <ion-item *ngIf="form.controls['password'].errors?.minlength && form.controls['password'].dirty || form.controls['password'].errors?.maxlength && form.controls['password'].dirty "><small>Minimum characters: 7, Maximum characters: 35</small></ion-item>
+    <ion-item *ngIf="form.controls['password'].errors?.validatePassword && form.controls['password'].dirty"><small>Contain upper and lower case, a special character and a number</small></ion-item>
 
     <!-- Confirm Password Input -->
     <ion-item [ngClass]="{'has-error': (form.controls['confirm'].errors && form.controls['confirm'].dirty) || (form.errors?.matchingPasswords && form.controls['confirm'].dirty), 'has-success': !form.controls['confirm'].errors && !form.errors?.matchingPasswords}">
       <ion-label>Confirm Password</ion-label>
       <ion-input type="password" class="form-control" autocomplete="off" formControlName="confirm"></ion-input>
-      <!-- Validation -->
-      <ion-list no-lines class="help-block">
-        <ion-item *ngIf="form.controls['confirm'].errors?.required && form.controls['confirm'].dirty">This field is required</ion-item>
-        <ion-item *ngIf="form.controls['confirm'].errors?.matchingPasswords && form.controls['confirm'].dirty">Password do not match</ion-item>
-      </ion-list>
     </ion-item>
+    <!-- Validation -->
+    <ion-item *ngIf="form.controls['confirm'].errors?.required && form.controls['confirm'].dirty"><small>This field is required</small></ion-item>
+    <ion-item *ngIf="form.controls['confirm'].errors?.matchingPasswords && form.controls['confirm'].dirty"><small>Password do not match</small></ion-item>
+
 
     <!-- Confirm Admin Input -->
     <ion-item>
@@ -101,24 +91,21 @@
          'has-success': !organizationForm.controls['organizationname'].errors && organValid}">
           <ion-label>Organization Name</ion-label>
           <ion-input type="text" class="form-control" autocomplete="off" formControlName="organizationname" (blur)="checkOrganization()"></ion-input>
-          <ion-list no-lines class="help-block">
-            <ion-item *ngIf="organizationForm.controls['organizationname'].errors?.required && organizationForm.controls['organizationname'].dirty">This field is required</ion-item>
-            <ion-item *ngIf="organizationForm.controls['organizationname'].errors?.minlength && organizationForm.controls['organizationname'].dirty || organizationForm.controls['organizationname'].errors?.maxlength && organizationForm.controls['organizationname'].dirty ">Minimum characters: 3, Maximum characters: 15</ion-item>
-            <ion-item *ngIf="organizationForm.controls['organizationname'].errors?.validateOrganization && organizationForm.controls['organizationname'].dirty">Organization must not have any special characters</ion-item>
-            <ion-item *ngIf="organMessage"> {{ organMessage }} </ion-item>
-          </ion-list>
         </ion-item>
+        <ion-item *ngIf="organizationForm.controls['organizationname'].errors?.required && organizationForm.controls['organizationname'].dirty"><small>This field is required</small></ion-item>
+        <ion-item *ngIf="organizationForm.controls['organizationname'].errors?.minlength && organizationForm.controls['organizationname'].dirty || organizationForm.controls['organizationname'].errors?.maxlength && organizationForm.controls['organizationname'].dirty "><small>Minimum characters: 3, Maximum characters: 15</small></ion-item>
+        <ion-item *ngIf="organizationForm.controls['organizationname'].errors?.validateOrganization && organizationForm.controls['organizationname'].dirty"><small>Organization must not have any special characters</small></ion-item>
+        <ion-item *ngIf="organMessage"> {{ organMessage }} </ion-item>
+
 
         <!-- Loc Input -->
         <ion-item [ngClass]="{'has-error': (organizationForm.controls['location'].errors && organizationForm.controls['location'].dirty),
          'has-success': !organizationForm.controls['location'].errors}">
           <ion-label>Location</ion-label>
           <ion-input type="text" name="location" class="form-control" autocomplete="off" placeholder="*location" formControlName="location"></ion-input>
-          <ion-list no-lines class="help-block">
-            <ion-item *ngIf="organizationForm.controls['location'].errors?.required && organizationForm.controls['location'].dirty">This field is required</ion-item>
-            <ion-item *ngIf="organizationForm.controls['location'].errors?.validateOrganization && organizationForm.controls['location'].dirty">Location must not have any special characters</ion-item>
-          </ion-list>
         </ion-item>
+        <ion-item *ngIf="organizationForm.controls['location'].errors?.required && organizationForm.controls['location'].dirty"><small>This field is required</small></ion-item>
+        <ion-item *ngIf="organizationForm.controls['location'].errors?.validateOrganization && organizationForm.controls['location'].dirty"><small>Location must not have any special characters</small></ion-item>
 
         <!-- Submit Input -->
         <!--<input [disabled]="!form.valid || processing || !organValid" type="submit" class="btn btn-primary" value="Submit" />-->

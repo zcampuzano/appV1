@@ -22,6 +22,7 @@ export class GamePage implements OnInit {
   gameData;
   athleteArr = [];
   disabled = false;
+  dateDefault = new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000).toISOString().slice(0,-1);
 
   constructor(private http: HttpClient,
               private sportService: SportAuthService,

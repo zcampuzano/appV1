@@ -16,33 +16,31 @@
     <ion-item [ngClass]="{'has-error': form.controls['firstname'].errors && form.controls['firstname'].dirty, 'has-success': form.controls['firstname'].errors}">
       <ion-label>First Name</ion-label>
       <ion-input class="form-control" formControlName="firstname" type="text"></ion-input>
-      <!-- Validation -->
-      <ion-list class="help-block">
-        <ion-item *ngIf="form.controls['firstname'].errors?.required && form.controls['firstname'].dirty">This field is required.</ion-item>
-      </ion-list>
     </ion-item>
+    <!-- Validation -->
+    <ion-item *ngIf="form.controls['firstname'].errors?.required && form.controls['firstname'].dirty"><small>This field is required.</small></ion-item>
+    <ion-item *ngIf="form.controls['firstname'].errors?.validateUsername && form.controls['firstname'].dirty"><small>First Name must be at least 1 character and no more than 20.</small></ion-item>
+
 
     <!-- Last Name Input -->
     <ion-item [ngClass]="{'has-error': form.controls['lastname'].errors && form.controls['lastname'].dirty, 'has-success': form.controls['lastname'].errors}">
       <ion-label>Last Name</ion-label>
       <ion-input class="form-control" formControlName="lastname" type="text"></ion-input>
       <!-- Validation -->
-      <ion-list class="help-block">
-        <ion-item *ngIf="form.controls['lastname'].errors?.required && form.controls['lastname'].dirty">This field is required.</ion-item>
-      </ion-list>
     </ion-item>
+    <ion-item *ngIf="form.controls['lastname'].errors?.required && form.controls['lastname'].dirty"><small>This field is required.</small></ion-item>
+    <ion-item *ngIf="form.controls['lastname'].errors?.validateUsername && form.controls['lastname'].dirty"><small>Last Name must be at least 1 character and no more than 20.</small></ion-item>
 
     <!-- Number Input -->
     <ion-item [ngClass]="{'has-error': form.controls['number'].errors && form.controls['number'].dirty, 'has-success': form.controls['number'].errors}">
       <ion-label>Number</ion-label>
-      <ion-input class="form-control" formControlName="number" type="number"></ion-input>
+      <ion-input class="form-control" formControlName="number" type="number" min="0" max="100"></ion-input>
       <!-- Validation -->
-      <ion-list class="help-block">
-        <ion-item *ngIf="form.controls['number'].errors?.required && form.controls['number'].dirty">This field is required.</ion-item>
-      </ion-list>
     </ion-item>
+    <ion-item *ngIf="form.controls['number'].errors?.required && form.controls['number'].dirty"><small>This field is required.</small></ion-item>
+    <ion-item *ngIf="form.controls['number'].errors?.validateNumber && form.controls['number'].dirty"><small>Number must be between 0 and 59.</small></ion-item>
 
-    <!-- Number Input -->
+    <!-- Position Input -->
     <ion-item [ngClass]="{'has-error': form.controls['position'].errors && form.controls['position'].dirty, 'has-success': form.controls['position'].errors}">
       <ion-label>Position</ion-label>
       <ion-select class="form-control" formControlName="position">
@@ -58,14 +56,6 @@
 
   </form>
   <!-- Registration Form /-->
-  <ion-item class="team">
-    <ion-label>
-      <h1>Team</h1>
-    </ion-label>
-    <ion-button fill="clear" slot="end" (click)="onOrganizationClick()">
-      <ion-icon name="arrow-round-forward"></ion-icon>
-    </ion-button>
-  </ion-item>
 
   <ion-list>
     <ion-grid>
@@ -75,7 +65,15 @@
         <ion-col size="2">#</ion-col>
         <ion-col>Stats</ion-col>
       </ion-row>
-      <ion-row *ngFor="let athlete of athletes" class="row">
+
+      <ion-row class="row" (click)="onOrganizationClick()">
+        <ion-col size="2">-</ion-col>
+        <ion-col size="6">Team</ion-col>
+        <ion-col size="2">-</ion-col>
+        <ion-col size="2"><ion-button fill="clear" (click)="onOrganizationClick()"><ion-icon name="arrow-round-forward"></ion-icon></ion-button></ion-col>
+      </ion-row>
+
+      <ion-row *ngFor="let athlete of athletes" class="row" (click)="onAthleteClick(athlete._id, athlete.firstname, athlete.lastname)">
         <ion-col size="2">
           {{ athlete.position }}
         </ion-col>

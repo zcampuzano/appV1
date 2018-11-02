@@ -28,7 +28,6 @@ export class AddAthletePage implements OnInit {
       this.createForm();
   }
 
-  //todo view team stats
 
   ngOnInit() {
     this.getAthletes();
@@ -48,9 +47,8 @@ export class AddAthletePage implements OnInit {
               this.validateUsername // Custom validation
           ])],
           number: ['', ([//Validators.compose([
-              //Validators.required, // Field is required
-              //this.validateUsername // Custom validation
-              //todo add custom number validation
+              Validators.required, // Field is required
+              this.validateNumber // Custom validation
           ])],
           position: ['']
       }, { validator: null});
@@ -120,7 +118,18 @@ export class AddAthletePage implements OnInit {
       } else {
           return { 'validateUsername': true } // Return as invalid username
       }
-      //todo allow names less than 3 characters
+  }
+
+  // Function to validate number
+  validateNumber(controls) {
+      // Create a regular expression
+      const regExp = new RegExp(/^[0-5]?[0-9]$/);
+      // Test number
+      if (regExp.test(controls.value)) {
+          return null;
+      } else {
+          return { 'validateNumber': true }
+      }
   }
 
   makeVisible() {
@@ -163,6 +172,8 @@ export class AddAthletePage implements OnInit {
                   organization : data['organID']
               };
 
+              console.log(athlete);
+
               const lastSeason = data['seasons'].seasons.length - 1;
               const seasonID = data['seasons'].seasons[lastSeason];
 
@@ -171,6 +182,7 @@ export class AddAthletePage implements OnInit {
                   if (data['success']) {
                       this.messageClass = 'alert alert-success'; // Set a success class
                       this.message = data['message']; // Set a success message
+                      console.log(this.message);
                       const season = {
                           seasonID : seasonID,
                           athleteID : data['athleteID']
@@ -187,6 +199,7 @@ export class AddAthletePage implements OnInit {
                   } else {
                       this.messageClass = 'alert alert-danger'; // Set an error class
                       this.message = data['message']; // Set an error message
+                      console.log(this.message);
                       this.processing = false; // Re-enable submit button
                       this.enableForm(); // Re-enable form
                   }

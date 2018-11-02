@@ -7,13 +7,13 @@ const Schema = mongoose.Schema; // Import Schema from Mongoose
 
 
 // Validate Function to check username length
-let usernameLengthChecker = (username) => {
+let nameLengthChecker = (name) => {
     // Check if username exists
-    if (!username) {
+    if (!name) {
         return false; // Return error
     } else {
         // Check length of username string
-        if (username.length < 3 || username.length > 15) {
+        if (name.length < 1 || name.length > 20) {
             return false; // Return error if does not meet length requirement
         } else {
             return true; // Return as valid username
@@ -22,14 +22,14 @@ let usernameLengthChecker = (username) => {
 };
 
 // Validate Function to check if valid username format
-let validUsername = (username) => {
+let validName = (name) => {
     // Check if username exists
-    if (!username) {
+    if (!name) {
         return false; // Return error
     } else {
         // Regular expression to test if username format is valid
         const regExp = new RegExp(/^[a-zA-Z0-9]+$/);
-        return regExp.test(username); // Return regular expression test result (true or false)
+        return regExp.test(name); // Return regular expression test result (true or false)
     }
 };
 
@@ -38,13 +38,13 @@ let validUsername = (username) => {
 const usernameValidators = [
     // First Username validator
     {
-        validator: usernameLengthChecker,
-        message: 'Username must be at least 3 characters but no more than 15'
+        validator: nameLengthChecker,
+        message: 'Name must be at least 1 character but no more than 20'
     },
     // Second username validator
     {
-        validator: validUsername,
-        message: 'Username must not have any special characters'
+        validator: validName,
+        message: 'Name must not have any special characters'
     }
 ];
 

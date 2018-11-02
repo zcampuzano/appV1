@@ -7,7 +7,7 @@
 
 <ion-content padding>
 
-  <ion-item class="team">
+  <ion-item class="team" (click)="selectStat(home.ID, home.stat)">
     <ion-label>
       <h1>{{home.name}}</h1>
     </ion-label>
@@ -17,18 +17,18 @@
   </ion-item>
 
   <ion-list no-margin lines="full" class="list-sm" *ngFor="let athlete of athletes">
-    <ion-item *ngIf="athlete.organization === home.ID">
-      <ion-label no-margin>
-        <h2>{{athlete.firstname}} {{athlete.lastname}} ({{athlete.number}})</h2>
-        <h4>{{athlete.position}}</h4>
-      </ion-label>
-      <ion-button fill="clear" slot="end" (click)="selectStat(id, athlete._id)">
-        <ion-icon name="arrow-round-forward"></ion-icon>
-      </ion-button>
-    </ion-item>
+      <ion-item *ngIf="athlete.organization === home.ID" (click)="selectStat(id, athlete._id)">
+        <ion-label no-margin>
+          <h2>{{athlete.firstname}} {{athlete.lastname}} ({{athlete.number}})</h2>
+          <h4>{{athlete.position}}</h4>
+        </ion-label>
+        <ion-button fill="clear" slot="end" (click)="selectStat(id, athlete._id)">
+          <ion-icon name="arrow-round-forward"></ion-icon>
+        </ion-button>
+      </ion-item>
   </ion-list>
 
-  <ion-item class="team">
+  <ion-item class="team" (click)="selectStat(away.ID, away.stat)">
     <ion-label>
       <h1>{{away.name}}</h1>
     </ion-label>
@@ -38,14 +38,14 @@
   </ion-item>
 
   <ion-list no-margin lines="full" *ngFor="let athlete of athletes">
-    <ion-item *ngIf="athlete.organization === away.ID">
-      <ion-label no-margin>
-        <h2>{{athlete.firstname}} {{athlete.lastname}} ({{athlete.number}})</h2>
-        <h4>{{athlete.position}}</h4>
-      </ion-label>
-      <ion-button fill="clear" slot="end" (click)="selectStat(id, athlete._id)">
-        <ion-icon name="arrow-round-forward"></ion-icon>
-      </ion-button>
-    </ion-item>
+      <ion-item *ngIf="athlete.organization === away.ID" (click)="selectStat(id, athlete._id)">
+        <ion-label no-margin>
+          <h2>{{athlete.firstname}} {{athlete.lastname}} ({{athlete.number}})</h2>
+          <h4>{{athlete.position}}</h4>
+        </ion-label>
+        <ion-button fill="clear" slot="end" (click)="selectStat(id, athlete._id)">
+          <ion-icon name="arrow-round-forward"></ion-icon>
+        </ion-button>
+      </ion-item>
   </ion-list>
 </ion-content>
