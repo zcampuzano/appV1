@@ -145,7 +145,13 @@ export class GamePage implements OnInit {
           // console.log(data);
           if(data['success']) {
               this.message = data['message'];
-              date = `${this.form.controls['date'].value.year.text}-${this.form.controls['date'].value.month.text}-${this.form.controls['date'].value.day.text}`;
+
+              try {
+                  date = `${this.form.controls['date'].value.year.text}-${this.form.controls['date'].value.month.text}-${this.form.controls['date'].value.day.text}`;
+              } catch {
+                  date = this.form.controls['date'].value.slice(0,10);
+              }
+
               let game;
               if (data['organID'] === this.form.controls['home'].value) {
                   game = {
