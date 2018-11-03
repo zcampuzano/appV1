@@ -374,7 +374,8 @@ module.exports = (router, session) => {
                             if (!allAthlete) {
                                 res.json({success: false, message: 'We do not have any athletes'}); // Return error, organs was not found in db
                             } else {
-                                res.json({success: true, athleteList: allAthlete})
+                                res.json({success: true, athleteList: allAthlete, organID: organID.organization})
+
                             }
                         }
                     })
