@@ -16,6 +16,7 @@ export class GamePage implements OnInit {
   form: FormGroup;
   organizations;
   athletes;
+  organID;
   messageClass;
   message;
   processing;
@@ -101,6 +102,7 @@ export class GamePage implements OnInit {
             // this.processing = false; // Re-enable submit button
         } else {
             this.athletes = data['athleteList'];
+            this.organID = data['organID'];
             // console.log(this.athletes);
         }
     });
@@ -120,7 +122,8 @@ export class GamePage implements OnInit {
         toast.present();
     }
 
-    //todo require atleast 5 players
+    //todo require at least 5 players -- completed_AC_18.11.03
+    //todo proper team selection for home and away
   onGameSubmit() {
       this.disableForm(); // Disable the form
       // FORM CHECKS
@@ -131,7 +134,31 @@ export class GamePage implements OnInit {
           this.enableForm();
           return;
       }
-      if (this.form.controls['home'].value == this.form.controls['away'].value) {
+      if (this.athleteArr.length < 5){
+          this.message = 'Please select at least 5 athletes to start the game';
+          this.presentToast();
+          this.enableForm();
+          return;
+      }
+      if (!this.form.controls['home'].value) {
+          this.message = "Home team must be selected";
+          this.presentToast();
+          this.enableForm();
+          return;
+      }
+      if (!this.form.controls['away'].value) {
+          this.message = "Away team must be selected";
+          this.presentToast();
+          this.enableForm();
+          return;
+      }
+      if (this.form.controls['home'].value !== this.organID && this.form.controls['away'].value !== this.organID) {
+          this.message = "Your team must be selected as the Home or Away team"
+          this.presentToast();
+          this.enableForm();
+          return;
+      }
+      if (this.form.controls['home'].value === this.form.controls['away'].value) {
           this.message = "Home and Away teams cannot be the same"
           this.presentToast();
           this.enableForm();
