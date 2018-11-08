@@ -12,6 +12,7 @@ export class GamesPage implements OnInit {
   games;
   message;
   messageClass;
+  organization;
 
   constructor(private sportService: SportAuthService,
               private authService: RegisterAuthService,
@@ -30,6 +31,7 @@ export class GamesPage implements OnInit {
               // this.processing = false; // Re-enable submit button
           } else {
               this.games = data['gameList'];
+              this.organization = data['organID'];
               this.getOrganDetails();
           }
       });

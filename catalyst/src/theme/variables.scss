@@ -1,8 +1,33 @@
 // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/theming/
-
 /** Ionic CSS Variables **/
 :root {
+
+
+  ion-toast {
+    --background: #222;
+    --color: #d7d7d7
+  }
+
+  ion-item {
+    //-webkit-text-fill-color: #E0E0E0;
+  }
+
+  ion-button {
+    -webkit-text-fill-color: whitesmoke;
+    //--color: 'dark'
+  }
+
+  ion-icon {
+    --color: #d7d7d7
+  }
+
+  ion-card {
+    --background: #ffffff
+  }
+
+  --ion-background-color: whitesmoke;
+
   /** primary **/
   --ion-color-primary: #488aff;
   --ion-color-primary-rgb: 72,138,255;
@@ -75,5 +100,12 @@
   --ion-color-dark-shade: #1e1e1e;
   --ion-color-dark-tint: #383838;
 
+  $colors: (
+          dark: #222
+  )
+
+
 
 }
+
+

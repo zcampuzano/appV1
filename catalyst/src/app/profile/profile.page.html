@@ -1,7 +1,7 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="dark">
     <ion-buttons slot="start">
-      <ion-menu-button color="dark"></ion-menu-button>
+      <ion-menu-button color="light"></ion-menu-button>
     </ion-buttons>
     <ion-title>My Account</ion-title>
   </ion-toolbar>
@@ -14,29 +14,29 @@
   <ion-list lines="full">
     <ion-item>
       <p>Username: {{ username }}</p>
-      <ion-button slot="end" (click)="editUsername = !editUsername">Edit</ion-button>
+      <ion-button color="dark" slot="end" (click)="editUsername = !editUsername">Edit</ion-button>
     </ion-item>
     <ion-item *ngIf="editUsername">
       <ion-label>
         New Username:
       </ion-label>
       <ion-input id="inputUserName" type="text" name="username"></ion-input>
-      <ion-button slot="end" (click)="changeUsername()">Save</ion-button>
+      <ion-button color="dark" slot="end" (click)="changeUsername()">Save</ion-button>
     </ion-item>
     <ion-item>
       <p>Email: {{ email }}</p>
-      <ion-button slot="end" (click)="editEmail = !editEmail">Edit</ion-button>
+      <ion-button color="dark" slot="end" (click)="editEmail = !editEmail">Edit</ion-button>
     </ion-item>
     <ion-item *ngIf="editEmail">
       <ion-label>
         New Email:
       </ion-label>
       <ion-input id="inputEmail" type="text" name="email"></ion-input>
-      <ion-button slot="end" (click)="changeEmail()">Save</ion-button>
+      <ion-button color="dark" slot="end" (click)="changeEmail()">Save</ion-button>
     </ion-item>
     <ion-item>
       <p>Password: ******** </p>
-      <ion-button slot="end" (click)="editPassword = !editPassword">Edit</ion-button>
+      <ion-button color="dark" slot="end" (click)="editPassword = !editPassword">Edit</ion-button>
     </ion-item>
     <ion-item *ngIf="editPassword">
       <ion-label>
@@ -55,7 +55,7 @@
         Confirm Password:
       </ion-label>
       <ion-input  id="inputPassword" type="text" name="password"></ion-input>
-      <ion-button slot="end" (click)="changePassword()">Save</ion-button>
+      <ion-button color="dark" slot="end" (click)="changePassword()">Save</ion-button>
     </ion-item>
     <ion-item>
       <p>Organization: {{ organizationname }}</p>

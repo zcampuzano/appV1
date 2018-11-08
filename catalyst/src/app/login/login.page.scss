@@ -1,0 +1,28 @@
+form {
+  margin-top: 35vh;
+}
+
+div {
+  background-color: whitesmoke;
+  height: 100%;
+}
+
+p {
+  color: silver;
+  padding-left: 32vw;
+  //margin-right: 30vw;
+  margin-top: 26vh;
+  position: center;
+}
+
+ion-icon {
+  font-size: 30vw;
+  margin-left: 31.5vw;
+  margin-right: 31.5vw;
+  margin-top: 10vh;
+  position: absolute;
+}
+
+ion-content > * {
+  overflow-y: hidden;
+}

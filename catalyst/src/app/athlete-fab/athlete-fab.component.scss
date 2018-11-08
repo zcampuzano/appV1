@@ -2,3 +2,13 @@
   width: 20px !important;
   height: 20px !important;
 }
+
+.normalToast {
+  .toast-message {
+    border-radius: 1rem !important;
+    //background: #222,
+    background-color: #222222
+  }
+}
+
+

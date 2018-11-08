@@ -1,25 +1,30 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-back-button></ion-back-button>
+  <ion-toolbar color="dark">
+    <ion-back-button color="light"></ion-back-button>
     <ion-title>Stats</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-item>
-    <ion-list>
-      <ion-item class="list-group-item">Name: {{ firstname }} {{ lastname }}</ion-item>
-      <ion-item class="list-group-item">Number: {{ number }}</ion-item>
-      <ion-item class="list-group-item">Position: {{ position }}</ion-item>
-    </ion-list>
-  </ion-item>
+<ion-content>
 
-  <ion-item>
-    <ion-list class="list-group">
-      <ion-item class="list-group-item" *ngFor="let field of bball_schema_props; let i = index">
-        {{field}} : {{bball_schema_vals[i]}}
-      </ion-item>
-    </ion-list>
-  </ion-item>
+  <ion-card color="dark">
+    <ion-card-header>
+      <ion-icon name="contact" slot="start"></ion-icon>
+      <ion-card-title>
+        {{ firstname }} {{ lastname }} ({{ number }})
+      </ion-card-title>
+      <ion-card-subtitle>
+        {{ position }}
+      </ion-card-subtitle>
+    </ion-card-header>
+  </ion-card>
+
+
+  <ion-card>
+    <ion-item *ngFor="let field of bball_schema_props; let i = index">
+      <ion-label>{{field}}: {{bball_schema_vals[i]}}</ion-label>
+    </ion-item>
+  </ion-card>
+
 
 </ion-content>

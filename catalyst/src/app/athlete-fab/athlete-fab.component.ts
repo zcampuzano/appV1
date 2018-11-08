@@ -155,6 +155,7 @@ export class AthleteFabComponent implements OnChanges {
       const toast = await this.toastCtrl.create({
           message: message,
           duration: 1000,
+          cssClass: 'normalToast'
       });
       toast.present();
   }

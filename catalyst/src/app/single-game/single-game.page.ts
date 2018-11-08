@@ -18,11 +18,13 @@ export class SingleGamePage implements OnInit {
       ID: '',
       name: '',
       stat: '',
+      athletes: [],
     };
     away = {
         ID: '',
         name: '',
         stat: '',
+        athletes: [],
     };
     id = '';
     athletes;
@@ -35,7 +37,6 @@ export class SingleGamePage implements OnInit {
   ngOnInit() {
       this.id = this.route.snapshot.params['id'];
       this.getGame();
-      this.getAthletes();
   }
 
   getGame() {
@@ -53,6 +54,7 @@ export class SingleGamePage implements OnInit {
               this.date = data['game'].date;
               this.id = this.route.snapshot.params['id'];
               this.getOrganDetails();
+              this.getAthletes();
               // this.bball_id = data['athlete'].basketballStat;
               // console.log(this.bball_id, "BBALL ID")
               // this.getBasketballStat();
@@ -68,8 +70,14 @@ export class SingleGamePage implements OnInit {
                 this.message = data['message']; // Set an error message
                 // this.processing = false; // Re-enable submit button
             } else {
-                this.athletes = data['athleteList'];
-                console.log(this.athletes);
+                let athletes = data['athleteList'];
+                this.home.athletes = athletes.filter((value) => {
+                   return value.organization === this.home.ID;
+                });
+                this.away.athletes = athletes.filter((value) => {
+                    console.log(value);
+                    return value.organization === this.away.ID;
+                });
             }
         });
   }

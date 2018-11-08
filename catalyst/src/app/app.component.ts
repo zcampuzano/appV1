@@ -40,14 +40,16 @@ export class AppComponent {
     private splashScreen: SplashScreen,
     private statusBar: StatusBar,
     private authService: RegisterAuthService,
-    private router: Router
+    private router: Router,
   ) {
     this.initializeApp();
   }
 
+
+
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
+      this.statusBar.styleLightContent();
       this.splashScreen.hide();
     });
   }

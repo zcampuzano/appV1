@@ -1,62 +1,88 @@
 <ion-header>
-  <ion-toolbar justify-content-between>
+  <ion-toolbar justify-content-between color="dark">
     <ion-buttons slot="start">
-      <ion-menu-button color="dark"></ion-menu-button>
+      <ion-menu-button color="light"></ion-menu-button>
     </ion-buttons>
     <ion-title>Roster</ion-title>
-    <ion-button float-right fill="clear" color="dark" (click)="makeVisible()">
+    <ion-button no-margin float-right fill="clear" color="light" (click)="makeVisible()">
       <ion-icon name="person-add"></ion-icon>
     </ion-button>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <form *ngIf="formVisible" [formGroup]="form" (submit)="onAthleteCreateSubmit()">
-    <!-- First Name Input -->
-    <ion-item [ngClass]="{'has-error': form.controls['firstname'].errors && form.controls['firstname'].dirty, 'has-success': form.controls['firstname'].errors}">
-      <ion-label>First Name</ion-label>
-      <ion-input class="form-control" formControlName="firstname" type="text"></ion-input>
+<ion-content>
+
+  <ion-card (click)="onOrganizationClick()" color="dark">
+    <ion-card-header>
+      <ion-icon float-right color="light" name="arrow-forward" size="large"></ion-icon>
+      <ion-card-title>
+        Team Stats
+      </ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+  <ion-card>
+    <ion-item *ngFor="let athlete of athletes" (click)="onAthleteClick(athlete._id, athlete.firstname, athlete.lastname)">
+      <ion-icon slot="start" name="person"></ion-icon>
+      <ion-label>{{ athlete.firstname }} {{ athlete.lastname }} ({{ athlete.number }})</ion-label>
+      <ion-button slot="end" fill="clear"><ion-icon color="dark" name="arrow-forward"></ion-icon></ion-button>
     </ion-item>
-    <!-- Validation -->
-    <ion-item *ngIf="form.controls['firstname'].errors?.required && form.controls['firstname'].dirty"><small>This field is required.</small></ion-item>
-    <ion-item *ngIf="form.controls['firstname'].errors?.validateUsername && form.controls['firstname'].dirty"><small>First Name must be at least 1 character and no more than 20.</small></ion-item>
 
+    <ion-item (click)="makeVisible()" color="dark">
+      <ion-icon slot="start" name="person-add"></ion-icon>
+      <ion-label>New Athlete</ion-label>
+      <ion-button slot="end" fill="clear"><ion-icon color="light" name="add"></ion-icon></ion-button>
+    </ion-item>
 
-    <!-- Last Name Input -->
-    <ion-item [ngClass]="{'has-error': form.controls['lastname'].errors && form.controls['lastname'].dirty, 'has-success': form.controls['lastname'].errors}">
-      <ion-label>Last Name</ion-label>
-      <ion-input class="form-control" formControlName="lastname" type="text"></ion-input>
+    <form *ngIf="formVisible" [formGroup]="form" (submit)="onAthleteCreateSubmit()">
+      <!-- First Name Input -->
+      <ion-item [ngClass]="{'has-error': form.controls['firstname'].errors && form.controls['firstname'].dirty, 'has-success': form.controls['firstname'].errors}">
+        <ion-label>First Name</ion-label>
+        <ion-input class="form-control" formControlName="firstname" type="text"></ion-input>
+      </ion-item>
       <!-- Validation -->
-    </ion-item>
-    <ion-item *ngIf="form.controls['lastname'].errors?.required && form.controls['lastname'].dirty"><small>This field is required.</small></ion-item>
-    <ion-item *ngIf="form.controls['lastname'].errors?.validateUsername && form.controls['lastname'].dirty"><small>Last Name must be at least 1 character and no more than 20.</small></ion-item>
-
-    <!-- Number Input -->
-    <ion-item [ngClass]="{'has-error': form.controls['number'].errors && form.controls['number'].dirty, 'has-success': form.controls['number'].errors}">
-      <ion-label>Number</ion-label>
-      <ion-input class="form-control" formControlName="number" type="number" min="0" max="100"></ion-input>
-      <!-- Validation -->
-    </ion-item>
-    <ion-item *ngIf="form.controls['number'].errors?.required && form.controls['number'].dirty"><small>This field is required.</small></ion-item>
-    <ion-item *ngIf="form.controls['number'].errors?.validateNumber && form.controls['number'].dirty"><small>Number must be between 0 and 59.</small></ion-item>
-
-    <!-- Position Input -->
-    <ion-item [ngClass]="{'has-error': form.controls['position'].errors && form.controls['position'].dirty, 'has-success': form.controls['position'].errors}">
-      <ion-label>Position</ion-label>
-      <ion-select class="form-control" formControlName="position">
-        <ion-select-option *ngFor="let position of positions" value="{{ position }}">
-          {{ position }}
-        </ion-select-option>
-      </ion-select>
-    </ion-item>
+      <ion-item *ngIf="form.controls['firstname'].errors?.required && form.controls['firstname'].dirty"><small>This field is required.</small></ion-item>
+      <ion-item *ngIf="form.controls['firstname'].errors?.validateUsername && form.controls['firstname'].dirty"><small>First Name must be at least 1 character and no more than 20.</small></ion-item>
 
 
-    <!-- Submit Input -->
-    <ion-button type="submit" size="full" class="btn btn-primary">Save</ion-button>
+      <!-- Last Name Input -->
+      <ion-item [ngClass]="{'has-error': form.controls['lastname'].errors && form.controls['lastname'].dirty, 'has-success': form.controls['lastname'].errors}">
+        <ion-label>Last Name</ion-label>
+        <ion-input class="form-control" formControlName="lastname" type="text"></ion-input>
+        <!-- Validation -->
+      </ion-item>
+      <ion-item *ngIf="form.controls['lastname'].errors?.required && form.controls['lastname'].dirty"><small>This field is required.</small></ion-item>
+      <ion-item *ngIf="form.controls['lastname'].errors?.validateUsername && form.controls['lastname'].dirty"><small>Last Name must be at least 1 character and no more than 20.</small></ion-item>
 
-  </form>
-  <!-- Registration Form /-->
+      <!-- Number Input -->
+      <ion-item [ngClass]="{'has-error': form.controls['number'].errors && form.controls['number'].dirty, 'has-success': form.controls['number'].errors}">
+        <ion-label>Number</ion-label>
+        <ion-input class="form-control" formControlName="number" type="number" min="0" max="100"></ion-input>
+        <!-- Validation -->
+      </ion-item>
+      <ion-item *ngIf="form.controls['number'].errors?.required && form.controls['number'].dirty"><small>This field is required.</small></ion-item>
+      <ion-item *ngIf="form.controls['number'].errors?.validateNumber && form.controls['number'].dirty"><small>Number must be between 0 and 59.</small></ion-item>
 
+      <!-- Position Input -->
+      <ion-item [ngClass]="{'has-error': form.controls['position'].errors && form.controls['position'].dirty, 'has-success': form.controls['position'].errors}">
+        <ion-label>Position</ion-label>
+        <ion-select class="form-control" formControlName="position">
+          <ion-select-option *ngFor="let position of positions" value="{{ position }}">
+            {{ position }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+
+      <!-- Submit Input -->
+      <ion-button margin-top="5px" color="dark" type="submit" size="full" class="btn btn-primary">Save</ion-button>
+      <ion-button size="full" class="btn btn-primary" (click)="makeVisible()">Cancel</ion-button>
+
+
+    </form>
+  </ion-card>
+
+  <!--
   <ion-list>
     <ion-grid>
       <ion-row class="row" style="font-weight: bold;">
@@ -89,5 +115,6 @@
       </ion-row>
     </ion-grid>
   </ion-list>
+  -->
 
 </ion-content>

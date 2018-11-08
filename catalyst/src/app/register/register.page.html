@@ -1,12 +1,12 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Register</ion-title>
-  </ion-toolbar>
-</ion-header>
 
 <ion-content padding>
   <!-- Registration Form -->
-  <form [formGroup]="form" (submit)="onRegisterSubmit()">
+  <form [formGroup]="form" (submit)="onRegisterSubmit()" class="form">
+    <ion-item>
+      <ion-title>
+        <h2>New Account</h2>
+      </ion-title>
+    </ion-item>
     <!-- First Name Input -->
     <ion-item [ngClass]="{'has-error': (form.controls['firstname'].errors && form.controls['firstname'].dirty), 'has-success': !form.controls['firstname'].errors}">
       <ion-label>First Name</ion-label>
@@ -115,9 +115,9 @@
 
 
     <!-- Submit Input -->
-    <ion-button size="full" type="submit" [disabled]="!form.valid">Register</ion-button>
+    <ion-button color="dark" size="full" type="submit" [disabled]="!form.valid">Register</ion-button>
     <!--[disabled]="!form.valid || processing || !emailValid || !usernameValid"-->
   </form>
   <!-- Registration Form /-->
-  <ion-button size="full" color="light" (click)="backToLogin()">Cancel</ion-button>
+  <ion-button size="full" (click)="backToLogin()">Cancel</ion-button>
 </ion-content>

@@ -423,7 +423,7 @@ module.exports = (router, session) => {
                             if (!allGames) {
                                 res.json({success: false, message: 'We do not have any games'});
                             } else {
-                                res.json({success: true, gameList: allGames});
+                                res.json({success: true, gameList: allGames, organID: organID.organization});
                             }
                         }
                     })

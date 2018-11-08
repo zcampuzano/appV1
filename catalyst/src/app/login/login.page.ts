@@ -28,9 +28,13 @@ export class LoginPage implements OnInit {
         this.createForm(); // Create Login Form when component is constructed
     }
 
+
+
     ionViewDidLoad() {
 
     }
+
+
 
     // Toast message
     async presentToast() {

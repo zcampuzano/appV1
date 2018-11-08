@@ -1,51 +1,44 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-back-button></ion-back-button>
+  <ion-toolbar color="dark">
+    <ion-button no-padding fill="clear" color="light" [routerLink]="['/games']">
+      <ion-icon name="arrow-back" size="large"></ion-icon>
+    </ion-button>
     <ion-title>{{ away.name }} @ {{ home.name }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content>
 
-  <ion-item class="team" (click)="selectStat(home.ID, home.stat)">
-    <ion-label>
-      <h1>{{home.name}}</h1>
-    </ion-label>
-    <ion-button fill="clear" slot="end" (click)="selectStat(home.ID, home.stat)">
-      <ion-icon name="arrow-round-forward"></ion-icon>
-    </ion-button>
-  </ion-item>
+  <ion-card color="dark">
+    <ion-card-header (click)="selectStat(home.ID, home.stat)">
+      <ion-card-subtitle>{{date.slice(0,10)}}</ion-card-subtitle>
+      <ion-card-title>
+        {{home.name}}<ion-icon name="arrow-forward" float-right size="large"></ion-icon>
+      </ion-card-title>
+      <ion-card-subtitle>home</ion-card-subtitle>
+    </ion-card-header>
+    <ion-item color="light" *ngFor="let athlete of home.athletes" (click)="selectStat(id, athlete._id)">
+      <ion-label>{{athlete.firstname}} {{athlete.lastname}} ({{athlete.number}})</ion-label>
+      <ion-button fill="clear" slot="end">
+        <ion-icon name="arrow-forward" color="dark"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-card>
 
-  <ion-list no-margin lines="full" class="list-sm" *ngFor="let athlete of athletes">
-      <ion-item *ngIf="athlete.organization === home.ID" (click)="selectStat(id, athlete._id)">
-        <ion-label no-margin>
-          <h2>{{athlete.firstname}} {{athlete.lastname}} ({{athlete.number}})</h2>
-          <h4>{{athlete.position}}</h4>
-        </ion-label>
-        <ion-button fill="clear" slot="end" (click)="selectStat(id, athlete._id)">
-          <ion-icon name="arrow-round-forward"></ion-icon>
-        </ion-button>
-      </ion-item>
-  </ion-list>
+  <ion-card color="dark">
+    <ion-card-header (click)="selectStat(away.ID, away.stat)">
+      <ion-card-subtitle>{{date.slice(0,10)}}</ion-card-subtitle>
+      <ion-card-title>
+        {{away.name}}<ion-icon name="arrow-forward" float-right size="large"></ion-icon>
+      </ion-card-title>
+      <ion-card-subtitle>away</ion-card-subtitle>
+    </ion-card-header>
+    <ion-item color="light" *ngFor="let athlete of away.athletes" (click)="selectStat(id, athlete._id)">
+      <ion-label>{{athlete.firstname}} {{athlete.lastname}} ({{athlete.number}})</ion-label>
+      <ion-button fill="clear" slot="end">
+        <ion-icon name="arrow-forward" color="dark"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-card>
 
-  <ion-item class="team" (click)="selectStat(away.ID, away.stat)">
-    <ion-label>
-      <h1>{{away.name}}</h1>
-    </ion-label>
-    <ion-button fill="clear" slot="end" (click)="selectStat(away.ID, away.stat)">
-      <ion-icon name="arrow-round-forward"></ion-icon>
-    </ion-button>
-  </ion-item>
-
-  <ion-list no-margin lines="full" *ngFor="let athlete of athletes">
-      <ion-item *ngIf="athlete.organization === away.ID" (click)="selectStat(id, athlete._id)">
-        <ion-label no-margin>
-          <h2>{{athlete.firstname}} {{athlete.lastname}} ({{athlete.number}})</h2>
-          <h4>{{athlete.position}}</h4>
-        </ion-label>
-        <ion-button fill="clear" slot="end" (click)="selectStat(id, athlete._id)">
-          <ion-icon name="arrow-round-forward"></ion-icon>
-        </ion-button>
-      </ion-item>
-  </ion-list>
 </ion-content>
