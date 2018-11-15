@@ -7,8 +7,8 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content >
-  <ion-card *ngFor="let game of games.slice().reverse()" (click)="selectGame(game._id)" margin=".5vh" color="dark">
+<ion-content>
+  <ion-card *ngFor="let game of games.reverse()" (click)="selectGame(game._id)" margin=".5vh" color="dark">
     <ion-card-header>
       <ion-card-subtitle>
         {{game.date[5]}}{{game.date[6]}}/{{game.date[8]}}{{game.date[9]}}/{{game.date[0]}}{{game.date[1]}}{{game.date[2]}}{{game.date[3]}}

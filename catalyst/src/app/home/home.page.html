@@ -34,19 +34,19 @@
       <ion-card-subtitle>Live</ion-card-subtitle>
     </ion-card-header>
     <ion-item>
-      <ion-label>
+      <ion-label *ngIf="topPlayers[0]">
         {{ topPlayers[0].tag }}
       </ion-label>
       <small *ngIf="topPlayers[0]">PTS: {{ topPlayers[0].PTM3*3 + topPlayers[0].PTM2*2 + topPlayers[0].FTM }} | AST: {{ topPlayers[0].AST }} | STL: {{ topPlayers[0].STL }} | TO: {{ topPlayers[0].TO }}</small>
     </ion-item>
     <ion-item>
-      <ion-label>
+      <ion-label *ngIf="topPlayers[1]">
         {{ topPlayers[1].tag }}
       </ion-label>
       <small *ngIf="topPlayers[1]">PTS: {{ topPlayers[1].PTM3*3 + topPlayers[1].PTM2*2 + topPlayers[1].FTM }} | AST: {{ topPlayers[1].AST }} | STL: {{ topPlayers[1].STL }} | TO: {{ topPlayers[1].TO }}</small>
     </ion-item>
     <ion-item>
-      <ion-label>
+      <ion-label *ngIf="topPlayers[2]">
         {{ topPlayers[2].tag }}
       </ion-label>
       <small *ngIf="topPlayers[2]">PTS: {{ topPlayers[2].PTM3*3 + topPlayers[2].PTM2*2 + topPlayers[2].FTM }} | AST: {{ topPlayers[2].AST }} | STL: {{ topPlayers[2].STL }} | TO: {{ topPlayers[2].TO }}</small>

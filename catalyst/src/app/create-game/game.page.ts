@@ -31,12 +31,12 @@ export class GamePage implements OnInit {
               private router: Router,
               private formBuilder: FormBuilder,
               private toastCtrl: ToastController) {
-    this.createForm();
-    this.generateOrgans();
-    this.getAthletes();
+      this.createForm();
   }
 
   ngOnInit() {
+      this.generateOrgans();
+      this.getAthletes();
   }
 
   createForm() {
@@ -241,7 +241,7 @@ export class GamePage implements OnInit {
                               this.sportService.updateSeasonGames(seasonUpdate).subscribe(data => {
                                   if (data['success']) {
                                       this.message = data['message'];
-                                      console.log(this.message);
+                                      //console.log(this.message);
 
                                       this.router.navigate(['/home']);
                                   }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SportAuthService } from "../services/sport-auth.service";
 import { RegisterAuthService } from "../services/register-auth.service";
 import { Router } from "@angular/router";
+import { LoadingController } from "@ionic/angular";
 
 @Component({
   selector: 'app-games',
@@ -9,17 +10,18 @@ import { Router } from "@angular/router";
   styleUrls: ['./games.page.scss'],
 })
 export class GamesPage implements OnInit {
-  games;
+  games = [];
   message;
   messageClass;
   organization;
 
   constructor(private sportService: SportAuthService,
               private authService: RegisterAuthService,
-              private router: Router) { }
+              private router: Router,
+              private loadCtrl: LoadingController) { }
 
   ngOnInit() {
-    this.getGames();
+    this.presentLoading();
   }
 
   getGames() {
@@ -35,6 +37,24 @@ export class GamesPage implements OnInit {
               this.getOrganDetails();
           }
       });
+  }
+
+  async presentLoading() {
+
+      const loading = await this.loadCtrl.create({
+          message: ''
+      });
+
+      await loading.present().then(() => {
+          this.getGames();
+          const interval = setInterval(() => {
+              if (this.games.length > 0) {
+                  loading.dismiss();
+                  clearInterval(interval);
+              }
+          }, 500);
+      });
+
   }
 
   getOrganDetails() {
