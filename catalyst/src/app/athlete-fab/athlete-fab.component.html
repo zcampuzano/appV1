@@ -1,21 +1,23 @@
-<ion-fab vertical="center" margin-top="15px">
+<ion-fab vertical="center">
   <ion-fab-button
           (dragStart)="dragStart($event)"
           (click)="pressEvent($event)"
           (dragEnd)="dragEnd($event)"
-          mwlDraggable>
+          [ghostDragEnabled]="true"
+          mwlDraggable
+          color="danger">
     {{athlete.number}}
   </ion-fab-button>
   <ion-fab-list side="top">
-    <ion-fab-button (click)="AST()">AST</ion-fab-button>
-    <ion-fab-button (click)="TO()">TO</ion-fab-button>
-    <ion-fab-button (click)="ORB()">ORB</ion-fab-button>
-    <ion-fab-button (click)="FT()">FT</ion-fab-button>
+    <ion-fab-button color="dark" (click)="AST()">AST</ion-fab-button>
+    <ion-fab-button color="dark" (click)="TO()">TO</ion-fab-button>
+    <ion-fab-button color="dark" (click)="ORB()">ORB</ion-fab-button>
+    <ion-fab-button color="dark" (click)="FT()">FT</ion-fab-button>
   </ion-fab-list>
   <ion-fab-list side="bottom">
-    <ion-fab-button (click)="BLK()">BLK</ion-fab-button>
-    <ion-fab-button (click)="STL()">STL</ion-fab-button>
-    <ion-fab-button (click)="DRB()">DRB</ion-fab-button>
-    <ion-fab-button (click)="PF()">PF</ion-fab-button>
+    <ion-fab-button color="dark" (click)="BLK()">BLK</ion-fab-button>
+    <ion-fab-button color="dark" (click)="STL()">STL</ion-fab-button>
+    <ion-fab-button color="dark" (click)="DRB()">DRB</ion-fab-button>
+    <ion-fab-button color="dark" (click)="PF()">PF</ion-fab-button>
   </ion-fab-list>
 </ion-fab>

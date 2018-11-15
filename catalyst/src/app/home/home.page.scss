@@ -23,29 +23,35 @@
   z-index:2; }
 
 .drop1 {
-  height: 9vh;
+  //position: absolute;
+  height: 66vh;
   width: 88vw;
+  //top: 1px;
+  //left: 1px;
+  clip-path: ellipse(44vw 33vh at 50% 50%);
   margin-left: 6vw;
   margin-right: 6vw;
-  background-color: darkslategray;
-  bottom: 80vh;
-  z-index: 1;
+  background-color: black;
+  //bottom: 58vh;
+  z-index: 2;
 }
 .drop2 {
-  height: 22vh;
-  width: 88vw;
-  margin-left: 6vw;
-  margin-right: 6vw;
-  bottom: 58vh;
-  border-bottom-right-radius: 100vw;
-  border-bottom-left-radius: 100vw;
+  height: 68vh;
+  width: 76vw;
+  clip-path: ellipse(48vw 33vh at 50% 50%);
+  margin-left: 12vw;
+  margin-right: 12vw;
+
+  bottom: 62vh;
+  opacity: .2;
   background-color: darkslategray;
   z-index: 1;
 }
 .drop3 {
-  height: 44vh;
+  height: 50vh;
   width: 100vw;
-  bottom: 45vh;
+  bottom: 43vh;
+  opacity: .2;
   background-color: lightslategray;
   z-index: 0;
 }
@@ -74,8 +80,53 @@
   justify-content: center;
 }
 .dropOverActive2 {
-  background-color: midnightblue;
+  background-color: black;
+  opacity: .4;
 }
 .dropOverActive3 {
-  background-color: midnightblue;
+  background-color: black;
+  opacity: .4;
+}
+
+ion-content {
+  //height: 50vh;
+  //top: 60vh;
+  z-index: 3;
+}
+
+.buttons {
+  position: absolute;
+  //top: 93.9vh;
+  bottom: 0;
+  z-index: 3;
+}
+
+.img {
+  top: 0;
+  right: 0;
+  bottom: 20vh;
+  z-index: 0;
+}
+
+.back {
+  position: absolute;
+  top: 57vh;
+  width: 100vw;
+  height: 50vh;
+  background-color: whitesmoke;
+  z-index: 2;
+}
+
+.footer {
+  position: absolute;
+  z-index: 3;
+}
+
+ion-card-header {
+  padding-top: 1.5vh;
+  padding-bottom: 0vh;
+}
+
+ion-card {
+  margin-top: 5vh;
 }

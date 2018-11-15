@@ -11,6 +11,7 @@ export class SportAuthService {
   loginAuthToken;
   httpOptions;
 
+
   constructor(private http: HttpClient) { }
 
   // Function to create headers, add token, to be used in HTTP requests

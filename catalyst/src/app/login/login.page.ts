@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, FormControl, Validators} from "@angular/forms";
 import {RegisterAuthService} from "../services/register-auth.service";
 import {Router} from "@angular/router";
 import {AuthGuard} from "../guards/auth.guard";
-import { ToastController } from "@ionic/angular";
+import { ToastController, LoadingController } from "@ionic/angular";
 // import {Toast} from "@ionic/angular/dist/types/components/toast/toast";
 
 @Component({
@@ -23,7 +23,8 @@ export class LoginPage implements OnInit {
         private authService: RegisterAuthService,
         private router: Router,
         private authGuard: AuthGuard,
-        private toastCtrl: ToastController
+        private toastCtrl: ToastController,
+        private loadCtrl: LoadingController,
     ) {
         this.createForm(); // Create Login Form when component is constructed
     }
@@ -34,6 +35,24 @@ export class LoginPage implements OnInit {
 
     }
 
+
+    //Load
+    async presentLoad() {
+
+        const loading = await this.loadCtrl.create({
+            message: ''
+        });
+
+        await loading.present().then(() => {
+            const interval = setInterval(() => {
+                if (this.message) {
+                    loading.dismiss();
+                    clearInterval(interval);
+                }
+            }, 500);
+
+        });
+    }
 
 
     // Toast message
@@ -68,6 +87,7 @@ export class LoginPage implements OnInit {
 
     // Function to submit form and login user
     onLoginSubmit() {
+        this.presentLoad(); // indicate loading
         this.processing = true; // Used to submit button while is being processed
         this.disableForm(); // Disable form while being process
         // Create user object from user's input
@@ -88,7 +108,8 @@ export class LoginPage implements OnInit {
             } else {
                 this.messageClass = 'alert alert-success'; // Set bootstrap success class
                 this.message = data['message']; // Set success message
-                this.presentToast();
+                // this.presentToast();
+
                 // Function to store user's token in client local storage
                 this.authService.storeUserData(data['token'], data['user'].role);
                 console.log(data['user'].role);

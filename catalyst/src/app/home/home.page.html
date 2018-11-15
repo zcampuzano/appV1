@@ -9,10 +9,10 @@
   </ion-toolbar>
 </ion-header>
 
+
+
+<ion-img width="100%" height="50" src="../../assets/img/court.png"></ion-img>
 <button class="button" (click)="confirmScore()">
-  <div class="drop1" [class.dropOverActive2]="dropOverActive2" mwlDroppable
-       (dragEnter)="dropOverActive2 = true; dropOverActive3 = false"
-       (dragLeave)="dropOverActive2 = false; dropOverActive3 = true" (drop)="onDrop2($event)"></div>
   <div class="drop2" [class.dropOverActive2]="dropOverActive2" mwlDroppable
        (dragEnter)="dropOverActive2 = true; dropOverActive3 = false"
        (dragLeave)="dropOverActive2 = false; dropOverActive3 = true" (drop)="onDrop2($event)"></div>
@@ -23,14 +23,48 @@
 
 <div *ngIf="activeRoster.length === 5">
   <div *ngFor="let player of activeRoster; let i = index">
-    <app-athlete-fab [id]="player" [drop]="drop" class="athlete{{i}}"></app-athlete-fab>
+    <app-athlete-fab [id]="player" [confirm]="drop" class="athlete{{i}}" (event)="onAthleteEvent($event)"></app-athlete-fab>
   </div>
 </div>
 
+<div class="back">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Top Players</ion-card-title>
+      <ion-card-subtitle>Live</ion-card-subtitle>
+    </ion-card-header>
+    <ion-item>
+      <ion-label>
+        {{ topPlayers[0].tag }}
+      </ion-label>
+      <small *ngIf="topPlayers[0]">PTS: {{ topPlayers[0].PTM3*3 + topPlayers[0].PTM2*2 + topPlayers[0].FTM }} | AST: {{ topPlayers[0].AST }} | STL: {{ topPlayers[0].STL }} | TO: {{ topPlayers[0].TO }}</small>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        {{ topPlayers[1].tag }}
+      </ion-label>
+      <small *ngIf="topPlayers[1]">PTS: {{ topPlayers[1].PTM3*3 + topPlayers[1].PTM2*2 + topPlayers[1].FTM }} | AST: {{ topPlayers[1].AST }} | STL: {{ topPlayers[1].STL }} | TO: {{ topPlayers[1].TO }}</small>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        {{ topPlayers[2].tag }}
+      </ion-label>
+      <small *ngIf="topPlayers[2]">PTS: {{ topPlayers[2].PTM3*3 + topPlayers[2].PTM2*2 + topPlayers[2].FTM }} | AST: {{ topPlayers[2].AST }} | STL: {{ topPlayers[2].STL }} | TO: {{ topPlayers[2].TO }}</small>
+    </ion-item>
+  </ion-card>
 
-<ion-button (click)="presentLoading()">Active</ion-button>
+</div>
 
-<ion-item>
-  Team Score: {{ teamGameStat.PTS }}
-</ion-item>
+<ion-footer class="buttons">
+  <ion-button no-margin color="dark" size="full" (click)="presentLoading()">
+    <ion-icon name="people"></ion-icon>
+    <ion-label *ngIf="activeRoster.length === 5" padding>Team Score: {{ teamGameStat.PTS }}</ion-label>
+    <ion-label *ngIf="activeRoster.length !== 5" padding>Select Active Roster</ion-label>
+  </ion-button>
+</ion-footer>
+
+
+
+
+
 

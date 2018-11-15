@@ -280,6 +280,7 @@ export class GamePage implements OnInit {
                   this.message = data['message'];
               }
           })
+
       }
 
   }

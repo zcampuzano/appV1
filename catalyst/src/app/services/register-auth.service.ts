@@ -10,6 +10,7 @@ export class RegisterAuthService {
   domain = 'http://192.168.1.70:8080'; // Development Domain - Mobile
   // domain = 'http://localhost:8080'; // Development Domain - Web
   loginAuthToken;
+
   role;
   httpOptions;
 

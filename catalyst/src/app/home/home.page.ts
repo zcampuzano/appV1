@@ -18,7 +18,7 @@ export class HomePage implements OnChanges {
   date;
   dropOverActive2;
   dropOverActive3;
-  drop = 0;
+  drop = null;
   roster = [];
   organization;
   activeRoster = [];
@@ -50,6 +50,7 @@ export class HomePage implements OnChanges {
       PFPG : null, PPG : null, RPG : null, TOPG : null, MIN : null, PTS : 0, TRB : 0, FF : null,
       TECHF : null, DQ : null, GS : null, TF : null, W : null, L : null, T : null, _id : ''
   };
+  topPlayers = [];
 
   constructor(public http: HttpClient,
               private authService: RegisterAuthService,
@@ -185,6 +186,7 @@ export class HomePage implements OnChanges {
       let storedRoster = JSON.parse(window.localStorage.getItem('active'));
       if (storedRoster) {
           this.activeRoster = storedRoster;
+          this.getTopPlayers();
       }
       let storedScore = JSON.parse(window.localStorage.getItem('teamPoints'));
       if (storedScore) {
@@ -197,23 +199,18 @@ export class HomePage implements OnChanges {
   }
 
   onDrop2(event){
-        console.log('Element was dropped 2', event);
-        this.dropOverActive2 = false;
-        this.dropOverActive3 = false;
-        setTimeout(() => {
-            if (this.confirm) {
-                this.drop = 2;
-                this.teamGameStat.PTS += 2;
-                this.dropType = '2';
-                this.message = '2 Points';
-                window.localStorage.setItem('teamPoints', JSON.stringify(this.teamGameStat.PTS));
-                this.confirm = false;
-                setTimeout(() => {this.dropType = '0';}, 3000);
-            } else {
-                this.drop = 20;
-                this.message = 'Miss';
-            }
-        }, 1000);
+      console.log('Element was dropped 2', event);
+      this.dropOverActive2 = false;
+      this.dropOverActive3 = false;
+
+      setTimeout(() => {
+          if (this.drop === null) {
+              this.drop = false;
+              setTimeout(() => {
+                  this.drop = null;
+              }, 1000);
+          }
+      }, 1000);
 
   }
 
@@ -221,23 +218,69 @@ export class HomePage implements OnChanges {
       console.log('Element was droppped 3', event);
       this.dropOverActive2 = false;
       this.dropOverActive3 = false;
-      setTimeout(() => {
-         if (this.dropType !== '2' && this.confirm) {
-             this.drop = 3;
-             this.teamGameStat.PTS += 3;
-             this.message = '3 Points';
-             window.localStorage.setItem('teamPoints', JSON.stringify(this.teamGameStat.PTS));
-             this.confirm = false;
-         } else if (this.dropType !== '2' && !this.confirm) {
-             this.drop = 30;
-             this.message = 'Miss';
-         }
 
-      }, 2000);
+      setTimeout(() => {
+          if (this.drop === null) {
+              this.drop = false;
+              setTimeout(() => {
+                  this.drop = null;
+              }, 1000);
+          }
+          console.log(this.drop);
+      }, 1000);
+
   }
 
+  onAthleteEvent(event) {
+      this.teamGameStat.PTS = parseInt(window.localStorage.getItem('teamPoints'));
+      this.getTopPlayers();
+  }
+
+  getTopPlayers() {
+      const storedStats = [];
+      for (let i = 0; i < this.roster.length; i++) {
+          if (window.localStorage.getItem(this.roster[i]._id)) {
+              const storedStat = JSON.parse(window.localStorage.getItem(this.roster[i]._id));
+              storedStat['score'] = storedStat.PTM3 + storedStat.PTM2 + storedStat.FTM + storedStat.BLK + storedStat.STL + storedStat.AST - storedStat.TO;
+              storedStat['tag'] = `${this.roster[i].lastname} (${this.roster[i].number})`;
+              storedStats.push(storedStat);
+          }
+      }
+
+      this.topPlayers = this.sortPlayers(storedStats).slice(0,3);
+
+  }
+
+  sortPlayers(arr) {
+      if (arr.length < 1) {
+          return arr;
+      } else {
+          let left = [];
+          let right = [];
+          let newArr = [];
+          let pivot = arr.pop();
+          let length = arr.length;
+
+          for (let j = 0; j < length; j++) {
+              if (arr[j].score >= pivot.score) {
+                  left.push(arr[j]);
+              } else {
+                  right.push(arr[j]);
+              }
+          }
+
+          return newArr.concat(this.sortPlayers(left), pivot, this.sortPlayers(right));
+      }
+
+  }
+
+
   confirmScore() {
-      this.confirm = true;
+      this.drop = true;
+      setTimeout(() => {
+          this.drop = null;
+      }, 1000);
+      console.log(this.drop);
   }
 
   async saveConfirm() {
@@ -301,6 +344,7 @@ export class HomePage implements OnChanges {
       window.localStorage.removeItem('teamPoints');
       this.roster = [];
       this.activeRoster = [];
+      this.topPlayers = [];
       this.currentGame = false;
       this.message = 'Game Saved!';
       this.presentToast();
