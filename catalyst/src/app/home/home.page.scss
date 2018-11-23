@@ -101,11 +101,13 @@ ion-content {
   z-index: 3;
 }
 
+//todo figure out sizing and placement
 .img {
-  top: 0;
+  top: 8vh;
   right: 0;
-  bottom: 20vh;
+  //bottom: 20vh;
   z-index: 0;
+  position: absolute;
 }
 
 .back {
@@ -117,9 +119,10 @@ ion-content {
   z-index: 2;
 }
 
-.footer {
+.footer-icon {
   position: absolute;
-  z-index: 3;
+  left: 0;
+  padding-left: 4vw;
 }
 
 ion-card-header {

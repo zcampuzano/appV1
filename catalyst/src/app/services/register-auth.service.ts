@@ -7,10 +7,10 @@ const jwtHelper = new JwtHelperService();
   providedIn: 'root'
 })
 export class RegisterAuthService {
-  // domain = 'http://192.168.1.70:8080'; // Development Domain - Mobile
-  domain = 'http://localhost:8080'; // Development Domain - Web
+  // domain = 'http://10.55.98.145:8080'; // Dev Domain - NCR
+  // domain = 'http://192.168.0.18:8080'; // Development Domain - Mobile
+  domain = 'http://172.29.0.0:8080'; // Development Domain - Web
   loginAuthToken;
-
   role;
   httpOptions;
 

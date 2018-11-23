@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SportAuthService } from "../services/sport-auth.service";
 import { RegisterAuthService } from "../services/register-auth.service";
 import { Router } from "@angular/router";
-import { LoadingController } from "@ionic/angular";
+import { LoadingController, ToastController } from "@ionic/angular";
 
 @Component({
   selector: 'app-games',
@@ -18,7 +18,8 @@ export class GamesPage implements OnInit {
   constructor(private sportService: SportAuthService,
               private authService: RegisterAuthService,
               private router: Router,
-              private loadCtrl: LoadingController) { }
+              private loadCtrl: LoadingController,
+              private toastCtrl: ToastController) { }
 
   ngOnInit() {
     this.presentLoading();
@@ -39,6 +40,16 @@ export class GamesPage implements OnInit {
       });
   }
 
+  async presentToast(message) {
+      const toast = await this.toastCtrl.create({
+          message: message,
+          duration: 1000,
+          cssClass: 'normalToast'
+      });
+
+      toast.present();
+  }
+
   async presentLoading() {
 
       const loading = await this.loadCtrl.create({
@@ -51,8 +62,17 @@ export class GamesPage implements OnInit {
               if (this.games.length > 0) {
                   loading.dismiss();
                   clearInterval(interval);
+              } else if (this.message) {
+                  this.presentToast(this.message);
               }
           }, 500);
+          setTimeout(() => {
+              if (this.games.length === 0) {
+                  this.presentToast('Request timeout');
+                  loading.dismiss();
+                  clearInterval(interval);
+              }
+          }, 10000)
       });
 
   }

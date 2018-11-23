@@ -170,8 +170,8 @@ export class AthleteFabComponent implements OnChanges {
                       } else {
                           window.localStorage.setItem('teamPoints', JSON.stringify(1));
                       }
-                      this.act(true);
                       window.localStorage.setItem(this._id, JSON.stringify(this.stat));
+                      this.act(true);
                   }
               }
           ]
@@ -205,11 +205,11 @@ export class AthleteFabComponent implements OnChanges {
             } else {
                 window.localStorage.setItem('teamPoints', JSON.stringify(2));
             }
-            this.act(true);
         } else {
             this.actionToast(`Miss (${this.athlete.number})`);
         }
         window.localStorage.setItem(this._id, JSON.stringify(this.stat));
+        this.act(true);
     } else if (this.drop === 3) {
         this.stat.PTA3 += 1;
         if (this._confirm) {
@@ -227,6 +227,7 @@ export class AthleteFabComponent implements OnChanges {
             this.actionToast(`Miss (${this.athlete.number})`);
         }
         window.localStorage.setItem(this._id, JSON.stringify(this.stat));
+        this.act(true);
     }
   }
 

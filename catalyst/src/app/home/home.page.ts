@@ -1,4 +1,4 @@
-import {Component, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, OnChanges, SimpleChanges, NgZone} from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {RegisterAuthService} from "../services/register-auth.service";
 import {SportAuthService} from "../services/sport-auth.service";
@@ -58,7 +58,8 @@ export class HomePage implements OnChanges {
               private router: Router,
               private alertCtrl: AlertController,
               private toastCtrl: ToastController,
-              private loadCtrl: LoadingController) {}
+              private loadCtrl: LoadingController,
+              private _zone: NgZone) {}
 
 
   ngOnInit() {
@@ -169,7 +170,7 @@ export class HomePage implements OnChanges {
                           this.presentToast();
                           this.presentAlert();
                       } else {
-                          this.activeRoster = data;
+                          this._zone.run(() => this.activeRoster = data);
                           window.localStorage.setItem('active', JSON.stringify(this.activeRoster));
                           console.log(this.activeRoster);
                       }
@@ -186,11 +187,14 @@ export class HomePage implements OnChanges {
       let storedRoster = JSON.parse(window.localStorage.getItem('active'));
       if (storedRoster) {
           this.activeRoster = storedRoster;
-          this.getTopPlayers();
       }
       let storedScore = JSON.parse(window.localStorage.getItem('teamPoints'));
       if (storedScore) {
           this.teamGameStat.PTS = storedScore;
+      }
+      let storedTop = JSON.parse(window.localStorage.getItem('topPlayers'));
+      if (storedTop) {
+          this.topPlayers = storedTop;
       }
   }
 
@@ -232,7 +236,7 @@ export class HomePage implements OnChanges {
   }
 
   onAthleteEvent(event) {
-      this.teamGameStat.PTS = parseInt(window.localStorage.getItem('teamPoints'));
+      this._zone.run(() => this.teamGameStat.PTS = parseInt(window.localStorage.getItem('teamPoints')));
       this.getTopPlayers();
   }
 
@@ -248,7 +252,7 @@ export class HomePage implements OnChanges {
       }
 
       this.topPlayers = this.sortPlayers(storedStats).slice(0,3);
-
+      window.localStorage.setItem('topPlayers', JSON.stringify(this.topPlayers));
   }
 
   sortPlayers(arr) {
@@ -342,10 +346,13 @@ export class HomePage implements OnChanges {
       window.localStorage.removeItem('active');
       window.localStorage.removeItem('saveID');
       window.localStorage.removeItem('teamPoints');
-      this.roster = [];
-      this.activeRoster = [];
-      this.topPlayers = [];
-      this.currentGame = false;
+      window.localStorage.removeItem('topPlayers');
+      this._zone.run(() => {
+          this.roster = [];
+          this.activeRoster = [];
+          this.topPlayers = [];
+          this.currentGame = false;
+      });
       this.message = 'Game Saved!';
       this.presentToast();
   }

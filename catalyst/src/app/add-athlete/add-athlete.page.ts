@@ -123,7 +123,7 @@ export class AddAthletePage implements OnInit {
   // Function to validate number
   validateNumber(controls) {
       // Create a regular expression
-      const regExp = new RegExp(/^[0-5]?[0-9]$/);
+      const regExp = new RegExp(/^[0-9]?[0-9]$/);
       // Test number
       if (regExp.test(controls.value)) {
           return null;

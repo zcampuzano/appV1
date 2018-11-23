@@ -11,7 +11,7 @@
 
 
 
-<ion-img width="100%" height="50" src="../../assets/img/court.png"></ion-img>
+<ion-img class="img" src="../../assets/img/court.png"></ion-img>
 <button class="button" (click)="confirmScore()">
   <div class="drop2" [class.dropOverActive2]="dropOverActive2" mwlDroppable
        (dragEnter)="dropOverActive2 = true; dropOverActive3 = false"
@@ -57,7 +57,7 @@
 
 <ion-footer class="buttons">
   <ion-button no-margin color="dark" size="full" (click)="presentLoading()">
-    <ion-icon name="people"></ion-icon>
+    <ion-icon name="people" class="footer-icon"></ion-icon>
     <ion-label *ngIf="activeRoster.length === 5" padding>Team Score: {{ teamGameStat.PTS }}</ion-label>
     <ion-label *ngIf="activeRoster.length !== 5" padding>Select Active Roster</ion-label>
   </ion-button>
