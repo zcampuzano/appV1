@@ -15,7 +15,7 @@ export class AddAthletePage implements OnInit {
   athletes;
   formVisible = false;
   private processing: boolean;
-  positions = ['PG', 'SG', 'PF', 'SF', 'C'];
+  positions = ['C', 'PG', 'SG', 'G', 'PF', 'SF', 'F'];
   seasonStatID;
   organization;
 
@@ -32,7 +32,10 @@ export class AddAthletePage implements OnInit {
   ngOnInit() {
     this.getAthletes();
     this.checkSeason();
+
   }
+
+
 
   createForm() {
       this.form = this.formBuilder.group({
@@ -107,11 +110,11 @@ export class AddAthletePage implements OnInit {
 
   }
 
-
+  //todo double 00?
   // Function to validate username is proper format
   validateUsername(controls) {
       // Create a regular expression
-      const regExp = new RegExp(/^[a-zA-Z0-9]+$/);
+      const regExp = new RegExp(/^[a-zA-Z0-9 '.-]+$/);
       // Test username against regular expression
       if (regExp.test(controls.value)) {
           return null; // Return as valid username
@@ -119,6 +122,7 @@ export class AddAthletePage implements OnInit {
           return { 'validateUsername': true } // Return as invalid username
       }
   }
+
 
   // Function to validate number
   validateNumber(controls) {

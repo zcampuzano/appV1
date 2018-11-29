@@ -5,6 +5,7 @@ const mongoose = require('mongoose'); // Node Tool for MongoDB
 mongoose.Promise = global.Promise; // Configure Mongoose Promises
 const Schema = mongoose.Schema; // Import Schema from Mongoose
 
+//todo remove unique location
 const organizationSchema = new Schema({
     organizationname: { type: String, required: true, unique: true},
     location: { type: String, required: true, unique: true},

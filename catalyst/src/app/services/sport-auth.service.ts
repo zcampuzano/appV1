@@ -8,7 +8,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 export class SportAuthService {
   //  domain = 'http://10.55.98.145:8080'; // Dev Domain - NCR
   // domain = 'http://192.168.0.18:8080'; // Development Domain - Mobile
-  domain = 'https://maztrix.herokuapp.com'; // Development Domain - Web
+  domain = 'https://catalystdb.herokuapp.com'; // Development Domain - Web
   loginAuthToken;
   httpOptions;
 
